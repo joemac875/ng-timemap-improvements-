@@ -34,7 +34,6 @@ function MapObject(lat, log, title, startDate, endDate, icon, tags, uniqueid) {
             tags: this.tags,
             icon: this.icon
         });
-        vectorSource.addFeature(iconFeature);
         return iconFeature;
     };
 }
@@ -43,12 +42,14 @@ Category Class
 parameters:
   -elements: list of MapObjects
   -icon: url of image to display
+          vectorSource.addFeature(iconFeature);
+
 */
-function Category() {
+function Category(elements) {
     /*==========================================*/
     //variables
     /*==========================================*/
-    this.elements = [];
+    this.elements = elements || [];
     this.icon = "http://openlayers.org/en/v3.9.0/examples/data/icon.png";
     /*==========================================*/
     //methods
@@ -77,18 +78,17 @@ function Category() {
                 anchorYUnits: 'pixels',
                 opacity: 0.75,
                 src: this.icon
-            }));
+            }))
         });
     };
     //add the feature vector to the layer vector, and apply a style to whole layer
     this.vectorLayer = function() {
         return new ol.layer.Vector({
-            source: this.vectorSource,
+            source: this.vectorSource(),
             style: this.iconStyle()
         });
     }
     this.add = function(mapobj) {
         this.elements.push(mapobj);
-        this.init();
     };
 };

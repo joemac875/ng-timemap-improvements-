@@ -3,10 +3,15 @@
 categories -- an array of category objects
 */  
 var categories = [];
+var WoosterPoints =  new Category([]);
+var myPoint  = new MapObject(73.11, 12.11, "Myspot", [1,1,1992], [03,02,2011], "place", [], "aaaaa");
+WoosterPoints.add(myPoint);
+console.log(WoosterPoints);
 /*
 mapLayer -- stores all layers;
 */
 var mapLayers = [];
+mapLayers.push(WoosterPoints.vectorLayer())
 /*==========================================*/
 
 
