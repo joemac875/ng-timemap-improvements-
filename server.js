@@ -17,7 +17,9 @@ var server = http.createServer(app).listen(port, host, function() {
               host, port, app.get('env'));
 });
 
-// At the root of your website, we show the index.html page
+// Load the non admin map screen
 app.get('/', function(req, res) {
   res.sendfile('./public/index.html')
 });
+
+app.use(express.static('public'));
