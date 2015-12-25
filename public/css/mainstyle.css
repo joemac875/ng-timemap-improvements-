@@ -1,0 +1,13 @@
+.map {
+   cursor: default;
+  height: 100em;
+  margin: 0 !important;
+  padding: 0 !important;
+  width: 100%;
+  z-index: 0;
+    }
+    #timeline {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    }

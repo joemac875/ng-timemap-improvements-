@@ -1,28 +1,30 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>View Animation</title>
+    <title>COW Mapping Tool</title>
+
+   <link rel="stylesheet" href="/css/mainstyle.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vis/4.11.0/vis.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vis/4.11.0/vis.min.css" type="text/css">
     <link rel="stylesheet" href="http://openlayers.org/en/v3.12.1/css/ol.css" type="text/css">
     <script src="http://openlayers.org/en/v3.12.1/build/ol.js"></script>
-    <script src="https://code.jquery.com/jquery-1.11.2.min.js"></script>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
-  <body>
+  </head>
+    <body>
+<main class="page-row page-row-expanded">
+
     <div id="mapObjects"></div>
     <div id="map" class="map"></div>
-    <button id="rotate-left" title="Rotate clockwise">↻</button>
-    <button id="rotate-right" title="Rotate counterclockwise">↺</button>
-    <button id="rotate-around-rome">Rotate around Rome</button>
-    <button id="pan-to-london">Pan to London</button>
-    <button id="elastic-to-moscow">Elastic to Moscow</button>
-    <button id="bounce-to-istanbul">Bounce to Istanbul</button>
-    <button id="spin-to-rome">Spin to Rome</button>
-    <button id="fly-to-bern">Fly to Bern</button>
-    <button id="spiral-to-madrid">Spiral to Madrid</button>
+</main>
+<footer class="page-row">
+    <div id="timeline"></div>
+</footer>
     <!-- Begin JS includes-->
     <script src="/js/transitions.js"></script>
     <script src="/js/overloads.js"></script>
     <script src="/js/classes.js"></script>
     <script src="/js/map.js"></script>
+    <script src="/js/timeline.js"></script>
+    <!--  end includes-->
+
   </body>
 </html
