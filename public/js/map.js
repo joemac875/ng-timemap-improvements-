@@ -9,7 +9,6 @@ var myPoint = new MapObject(Math.random()*360-180, Math.random()*180-90, "Myspot
 var myPoint2 = new MapObject(Math.random()*360-180, Math.random()*180-90, "Myspot2", [01,01,1940], [03,11,1963], "place2", [], "aa3aa");
 WoosterPoints.add(myPoint2);
 WoosterPoints.add(myPoint);
-console.log(WoosterPoints);
 /*
 mapLayer -- stores all layers;
 */
