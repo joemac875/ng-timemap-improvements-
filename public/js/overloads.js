@@ -35,3 +35,9 @@ Array.prototype.markers = function() {
     }
     return returnArray;
 };
+// Function wiring prototypes to achieve inheritance
+function inherits(Parent, Child) {
+    function F() {}
+    F.prototype = Parent;
+    Child.prototype = new F();
+}

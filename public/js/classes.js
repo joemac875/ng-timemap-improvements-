@@ -1,4 +1,5 @@
 //Timemap Classes
+"use strict";
 /*
 Map Object Class
 parameters:

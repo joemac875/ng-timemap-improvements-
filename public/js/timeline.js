@@ -40,15 +40,17 @@ if ((typeof(renderpoint) === 'undefined') || typeof(objects) === 'undefined') {
   }
    /* Construct timeline */
    this.tm = new vis.Timeline(container, this.items, this.options);
+   /* Add parent object to child for event listeners */
+   this.tm.parent = this;
    /*  Listen for timeline range changes */
-   this.tm.on('rangechanged', function (props) {
-     this.visibleItems = props;
-
+    this.tm.on('rangechanged', function (properties) {
+            this.parent.
     });
     /*  Listen for clicks on timeline elements */
    this.tm.on('select', function (properties) {
-    console.log(properties);
+
     });
+   /*
    /*
       Begin defintion of class methods
    */
@@ -56,10 +58,17 @@ if ((typeof(renderpoint) === 'undefined') || typeof(objects) === 'undefined') {
     if ((typeof(this.visibleItems) === 'undefined')) {
       return this.visibleItems;
     } else {
-      return this.tm.getVisibleItems();
+      alert('Error');
    }
  }
 };
+Timeline.prototype = {
+changeItems: function (properties) {
+  console.log(this,properties);
+}
+}
+
+
+
   // Create a Timeline
 var timeline = new Timeline('timeline',WoosterPoints);
-console.log(timeline.itemsonTimeline());
