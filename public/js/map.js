@@ -17,15 +17,18 @@ function Map(data, renderlocation) {
     */
     this.categories = [];
     /*
-    mapLayer -- stores all layers;
-    */
-    this.mapLayers = [];
-    /*
     The data parameter can either be an array of Categories or a single Category. 
+    The mapObjects variable stores an array of openlayers objects holding the map layers and basemap objects
     */
     this.mapObjects = [];
-    this.initalize = function() {
-    this.mapObjects = [];
+    /*
+    this.mapData - the orginal object(s) used to generate the map layers
+    */
+    this.mapData = [];
+    /*
+    generateOlLayers() -- Creates ol layers vector objects for map from Category or array of Category objects and loads them into map objects
+    */
+    this.generateOlLayers =  function() {
     //add osm layer
     this.mapObjects.push(new ol.layer.Tile({
         source: new ol.source.OSM()
@@ -37,8 +40,11 @@ function Map(data, renderlocation) {
     } else {
         this.mapObjects.push(data.vectorLayer());
     }
+    }
+    this.initalize = function() {
+    this.generateOlLayers();
     //store a reference to our the orginal data set
-    this.mapData = data;
+    this.mapData.push(data);
     /*==========================================*/
 
 
@@ -47,7 +53,7 @@ function Map(data, renderlocation) {
     /*==========================================*/
     //display only visible map elements
     if (debug) console.log(data.elements);
-    var m = new ol.Map({
+    this.m = new ol.Map({
         layers: this.mapObjects,
         target: document.getElementById(String(this.renderlocation)),
         view: new ol.View({
@@ -55,20 +61,30 @@ function Map(data, renderlocation) {
             zoom: 3
         })
     });
-    m.on('singleclick', function(evt) {
-        var coordinates = m.getEventCoordinate(evt.originalEvent);
+    this.m.on('singleclick', function(evt) {
+        var coordinates = this.m.getEventCoordinate(evt.originalEvent);
         console.log(coordinates);
+        console.log(this.mapObjects)
     });
-           console.log(m.layers);
 
-    this.update();
     /*==========================================*/
     //update() -- redraws map
     /*==========================================*/
   };
     this.update = function() {
-       // this.mapLayer = map;
-        console.log('updated!')
+        for (var i = 0; i < this.mapObjects.length; i++) {
+           var features = this.mapObjects[i].getSource(); // get features associated with layer
+           console.log(typeof features);
+           features.clear(); //remove features
+           //add back visible features
+           var mdata = this.mapData[i];
+           console.log(this.mapData.length,i);
+           for(var k = this.mapData[i].elements.length-1; k >=0; k--) {
+                features.addFeature.addFeature(this.mapData[i].elements[k].getFeature());
+           }
+        };
+        this.m.render(); //redraw
+     
     }
 }
 var map = new Map(WoosterPoints, 'map');

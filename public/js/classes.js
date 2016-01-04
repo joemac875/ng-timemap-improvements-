@@ -153,7 +153,8 @@ function Category(elements) {
             //add the feature vector to the layer vector, and apply a style to whole layer
         return new ol.layer.Vector({
             source: this.vectorSource(),
-            style: this.iconStyle()
+            style: this.iconStyle(),
+            visible: this.visible
         });
     }
     /*
@@ -230,25 +231,34 @@ function Timeline(renderpoint,objects,map) {
    this.tm.parent = this;
    /*  Listen for timeline range changes */
     this.tm.on('rangechanged', function (properties) {
-        /* set window title */
-        window.document.title = String(properties.start) + " to "+ String(properties.end);
-        if ( typeof(this.parent.map.mapData) === 'undefined' ) { 
+       /* set window title */
+      if(debug) console.log(this.parent.map.mapData);
+      window.document.title = String(properties.start) + " to "+ String(properties.end);
+      for (var i = this.parent.map.mapData.length - 1; i >= 0; i--) {
+        if ( typeof(this.parent.map.mapData[i]) === 'undefined' ) { 
             alert('Error: Invalid Map Object!');
         } else {
-            console.log(this.parent.map.mapData);
-            for ( var i = this.parent.map.mapData.elements.length - 1; i >= 0; i-- ) {
-                var dates = this.parent.map.mapData.elements[i].getDates();
+            for ( var k = this.parent.map.mapData[i].elements.length - 1; k >= 0; k-- ) {
+                var dates = this.parent.map.mapData[i].elements[k].getDates();
                 if ( (properties.start < dates.start) || (dates.end > properties.end) )
-                        this.parent.map.mapData.elements[i].visible = true;
+                        this.parent.map.mapData[i].elements[k].visible = true;
                     else
-                        this.parent.map.mapData.elements[i].visible = false;
+                        this.parent.map.mapData[i].elements[k].visible = false;
             };
-            console.log(this.parent)
-            this.parent.map.initalize();
+            if(debug) console.log(this.parent);
+          };
+            this.parent.map.update();
       }
     })
     /*  Listen for clicks on timeline elements */
    this.tm.on('select', function (properties) {
+    /*     var pan = ol.animation.pan({
+          duration: 2000,
+          source: /** @type {ol.Coordinate} */ /*(map.getCenter())
+        });
+        map.beforeRender(pan);
+        view.setCenter(properties.latlon); */
+        console.log(properties)
     });
   
 };
