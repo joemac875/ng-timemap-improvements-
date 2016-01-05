@@ -6,6 +6,57 @@ WoosterPoints.add(myPoint);
 /*
 /* */
 var debug = true;
+
+   /**
+       * Define a namespace for the application.
+       */
+      window.app = {};
+      var app = window.app;
+
+
+      //
+      // Define map controls.
+      //
+
+     /*
+    Class FilterButton
+    defines an ol3 button which triggers the filter modal
+     */
+      /**
+       * @constructor
+       * @extends {ol.control.Control}
+       * @param {Object=} opt_options Control options.
+       */
+      app.FilterButton = function(opt_options) {
+
+        var options = opt_options || {};
+
+        var button = document.createElement('button');
+        button.innerHTML = '<i data-toggle="tooltip" title="Filters" class="fa fa-filter"></i>';
+
+        var this_  = this;
+        /*
+        Opens Modal
+        */
+        var openFilter = function(e) {
+          $('#filterModal').modal('toggle');
+        };
+
+        button.addEventListener('click', openFilter, false);
+        button.addEventListener('touchstart', openFilter, false);
+
+        var element = document.createElement('div');
+        element.className = 'filterButton ol-unselectable ol-control';
+        element.appendChild(button);
+
+        ol.control.Control.call(this, {
+          element: element,
+          target: options.target
+        });
+
+      };
+      ol.inherits(app.FilterButton, ol.control.Control);
+
 /*==========================================*/
 function Map(data, renderlocation) {
     /*
@@ -62,11 +113,19 @@ function Map(data, renderlocation) {
     //display only visible map elements
     if (debug) console.log(data.elements);
     this.m = new ol.Map({
+        controls: ol.control.defaults({
+          attributionOptions: /** @type {olx.control.AttributionOptions} */ ({
+            collapsible: false
+          })
+        }).extend([
+          new app.FilterButton()
+        ]),
         layers: this.mapObjects,
         target: document.getElementById(String(this.renderlocation)),
         view: new ol.View({
             center: [0, 0],
-            zoom: 2
+            zoom: 2,
+            rotation: 1
         })
     });
     this.m.on('singleclick', function(evt) {
