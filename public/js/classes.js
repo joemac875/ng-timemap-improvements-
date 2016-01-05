@@ -215,7 +215,7 @@ function Timeline(renderpoint,objects,map) {
   this.options = {};
   this.showCurrentTime = false; // do not display bar at the current date
   //get first and last dates to set max and min with
-  this.options.min = data[0].start;
+  this.options.min = data[0].start--;
   /*
       End declaration of class variables
   */
@@ -241,7 +241,8 @@ function Timeline(renderpoint,objects,map) {
         } else {
             for ( var k = this.parent.map.mapData[i].elements.length - 1; k >= 0; k-- ) {
                 var dates = this.parent.map.mapData[i].elements[k].getDates();
-                if ( (properties.start < dates.start) || (dates.end > properties.end) )
+                if ((dates.start >= properties.start && dates.start <= properties.end) ||
+       (properties.start >= dates.start && properties.start <= dates.end))
                         this.parent.map.mapData[i].elements[k].visible = true;
                     else
                         this.parent.map.mapData[i].elements[k].visible = false;
