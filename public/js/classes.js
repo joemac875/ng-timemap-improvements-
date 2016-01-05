@@ -94,13 +94,14 @@ vectorSource() - returns an openlayers3 vector containing the category features
 features() - returns a list containing the category features
 iconStyle() - returns ol style object for class of objects
 */
-function Category(elements) {
+function Category(elements,title,icon) {
     /*==========================================*/
     //variables
     /*==========================================*/
     this.visible = true;
+    this.title = title || guid();
     this.elements = elements || [];
-    this.icon = "http://openlayers.org/en/v3.9.0/examples/data/icon.png";
+    this.icon = icon || "http://openlayers.org/en/v3.9.0/examples/data/icon.png";
     /*==========================================*/
     //methods
     /*==========================================*/
