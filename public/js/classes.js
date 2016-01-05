@@ -111,6 +111,7 @@ function Category(elements) {
         var iconFeatures = new ol.source.Vector({
                 //create empty vector
         }); 
+        iconFeatures.kind = 'ol.source.Vector';
         // store the ol features
         for (var i = this.elements.length - 1; i >= 0; i--) {
             if ( this.elements[i].visible === true )

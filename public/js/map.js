@@ -35,16 +35,24 @@ function Map(data, renderlocation) {
     })); 
     if (data.constructor === Array) {
         for (var i = data.length - 1; i >= 0; i--) {
-            this.mapObjects.push(data[i].vectorLayer());
+            var layer = data[i].vectorLayer();
+            layer.kind = "Category";
+            layer.tmid = i; //create unique id for access when updating
+            this.mapObjects.push(layer);
+            this.mapData[i] = data[i];
         };
     } else {
-        this.mapObjects.push(data.vectorLayer());
+        //only a single data element exists
+            var layer = data.vectorLayer();
+            layer.kind = "Category";
+            layer.tmid = 0; //create unique id for access when updating
+            this.mapData[0] = data;
+            this.mapObjects.push(layer);
     }
     }
     this.initalize = function() {
     this.generateOlLayers();
     //store a reference to our the orginal data set
-    this.mapData.push(data);
     /*==========================================*/
 
 
@@ -58,33 +66,33 @@ function Map(data, renderlocation) {
         target: document.getElementById(String(this.renderlocation)),
         view: new ol.View({
             center: [0, 0],
-            zoom: 3
+            zoom: 2
         })
     });
     this.m.on('singleclick', function(evt) {
         var coordinates = this.m.getEventCoordinate(evt.originalEvent);
-        console.log(coordinates);
-        console.log(this.mapObjects)
     });
 
+ 
+  };
+      /*==========================================*/
+    //updatelayer () -- update layer features
+    /*==========================================*/
+    this.updateLayer = function(element, index, array) {
+       //is the element a category or basemap??
+       if(element.hasOwnProperty('kind')) {
+       if(debug) console.log(this.mapData[0],element.getSource(),element.getRevision(),this.mapData[0],this.mapData[0].vectorSource(),element.getProperties());
+        if(element.hasOwnProperty('tmid'))
+             element.setSource(this.mapData[element.tmid].vectorSource());
+
+         }
+    }
     /*==========================================*/
     //update() -- redraws map
     /*==========================================*/
-  };
     this.update = function() {
-        for (var i = 0; i < this.mapObjects.length; i++) {
-           var features = this.mapObjects[i].getSource(); // get features associated with layer
-           console.log(typeof features);
-           features.clear(); //remove features
-           //add back visible features
-           var mdata = this.mapData[i];
-           console.log(this.mapData.length,i);
-           for(var k = this.mapData[i].elements.length-1; k >=0; k--) {
-                features.addFeature.addFeature(this.mapData[i].elements[k].getFeature());
-           }
-        };
+        this.mapObjects.forEach(this.updateLayer,this);
         this.m.render(); //redraw
-     
     }
 }
 var map = new Map(WoosterPoints, 'map');
