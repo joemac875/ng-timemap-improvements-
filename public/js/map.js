@@ -178,9 +178,14 @@ function Map(data, renderlocation) {
         /*==========================================*/
         //initalize map
         /*==========================================*/
+    // default zoom, center and rotation
+      var zoom = 2;
+      var center = [0, 0];
+      var rotation = 0;
     this.initalize = function() {
         this.generateOlLayers();
         this.drawFilter();
+
         //display only visible map elements
         if (debug) console.log(data.elements);
         this.m = new ol.Map({
@@ -195,14 +200,52 @@ function Map(data, renderlocation) {
             layers: this.mapObjects,
             target: document.getElementById(String(this.renderlocation)),
             view: new ol.View({
-                center: [0, 0],
-                zoom: 2,
-                rotation: 0
+                center: center,
+                zoom: zoom,
+                rotation: rotation
             })
         });
         this.m.on('singleclick', function(evt) {
             var coordinates = this.m.getEventCoordinate(evt.originalEvent);
         }, this);
+
+     var shouldUpdate = true;
+      var view = this.m.getView();
+      var updatePermalink = function() {
+        if (!shouldUpdate) {
+          // do not update the URL when the view was changed in the 'popstate' handler
+          shouldUpdate = true;
+          return;
+        }
+
+        var center = view.getCenter();
+        var hash = '#map=' +
+            view.getZoom() + '/' +
+            Math.round(center[0] * 100) / 100 + '/' +
+            Math.round(center[1] * 100) / 100 + '/' +
+            view.getRotation();
+        var state = {
+          zoom: view.getZoom(),
+          center: view.getCenter(),
+          rotation: view.getRotation()
+        };
+        window.history.pushState(state, 'map', hash);
+      };
+
+      this.m.on('moveend', updatePermalink);
+
+      // restore the view state when navigating through the history, see
+      // https://developer.mozilla.org/en-US/docs/Web/API/WindowEventHandlers/onpopstate
+      window.addEventListener('popstate', function(event) {
+        if (event.state === null) {
+          return;
+        }
+        this.m.getView().setCenter(event.state.center);
+        this.m.getView().setZoom(event.state.zoom);
+        this.m.getView().setRotation(event.state.rotation);
+        shouldUpdate = false;
+      });
+
 
         /*==========================================*/
         //updatelayer () -- update layer features
