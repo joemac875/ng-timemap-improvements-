@@ -61,6 +61,7 @@ function Timeline(renderpoint,objects,map) {
        /* set window title */
       if(debug) console.log(this.parent.map.mapData);
       window.document.title = String(properties.start) + " to "+ String(properties.end);
+      /* update visible objects on map */
       for (var i = this.parent.map.mapData.length - 1; i >= 0; i--) {
         if ( typeof(this.parent.map.mapData[i]) === 'undefined' ) { 
             alert('Error: Invalid Map Object!');
@@ -80,13 +81,12 @@ function Timeline(renderpoint,objects,map) {
     })
     /*  Listen for clicks on timeline elements */
    this.tm.on('select', function (properties) {
-    /*     var pan = ol.animation.pan({
-          duration: 2000,
-          source: /** @type {ol.Coordinate} */ /*(map.getCenter())
-        });
-        map.beforeRender(pan);
-        view.setCenter(properties.latlon); */
-        console.log(properties)
+    //get selected object
+    var selectedItem = this.parent.items.get(properties.items[0]);
+    console.log(selectedItem);
+    //jump to selected object on map if object is valid
+    this.parent.map.moveToPoint(selectedItem.latlon);
+        
     });
   
 };

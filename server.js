@@ -21,5 +21,8 @@ var server = http.createServer(app).listen(port, host, function() {
 app.get('/', function(req, res) {
   res.sendfile('./public/index.html')
 });
+app.get('/edit/', function(req, res) {
+  res.sendfile('./public/index.html')
+});
 //serve the static components
 app.use(express.static('public'));

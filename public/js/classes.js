@@ -28,7 +28,7 @@ function MapObject(lat, log, title, startDate, endDate, icon, tags, uniqueid) {
     this.visible = true;
     //object methods
     this.LonLat = function() {
-        return ol.proj.fromLonLat([this.lon, this.lat]);
+        return new ol.proj.transform([this.lat, this.lon], 'EPSG:4326', 'EPSG:3857');
     };
     this.getFeature = function() {
     if(this.visible)
@@ -45,6 +45,7 @@ function MapObject(lat, log, title, startDate, endDate, icon, tags, uniqueid) {
     };
     this.getTimelineObject = function() {
         var visObject = {}; //API description @ http://visjs.org/docs/timeline/
+        visObject.latlon = this.LonLat(); 
         //is the object a point or line on the timeline?
         if (this.startDate === this.endDate) {
             visObject.type = 'point';

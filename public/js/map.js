@@ -1,6 +1,10 @@
 var WoosterPoints = new Category([], 'Random Points');
 var myPoint = new MapObject(Math.random() * 360 - 180, Math.random() * 180 - 90, "Myspot", [1, 1, 1992], [03, 02, 2011], "place", [], "aaaaa");
 var myPoint2 = new MapObject(Math.random() * 360 - 180, Math.random() * 180 - 90, "Myspot2", [01, 01, 1940], [03, 11, 1963], "place2", [], "aa3aa");
+var rome = new MapObject(12.5,41.9, "Rome", [01, 01, 1910], [03, 11, 1943], "place2", [], "aa3aa");
+var london = new MapObject(-0.12755,51.5072229, "Jolly Good Olde England", [01, 01, 1877], [03, 11, 1983], "place2", [], "aa3aa");
+WoosterPoints.add(london);
+WoosterPoints.add(rome);
 WoosterPoints.add(myPoint2);
 WoosterPoints.add(myPoint);
 /*
@@ -33,7 +37,7 @@ app.FilterButton = function(opt_options) {
     var options = opt_options || {};
 
     var button = document.createElement('button');
-    button.innerHTML = '<i data-toggle="tooltip" title="Filters" class="fa fa-filter"></i>';
+    button.innerHTML = '<i data-toggle="tooltip" title="Filters" data-placement="right" class="fa fa-filter"></i>';
 
     var this_ = this;
     /*
@@ -72,14 +76,14 @@ app.EditButton = function(opt_options) {
     var options = opt_options || {};
 
     var button = document.createElement('button');
-    button.innerHTML = '<i data-toggle="tooltip" title="Edit" class="fa fa-pencil"></i>';
+    button.innerHTML = '<i data-toggle="tooltip" title="Edit" data-placement="right"  class="fa fa-pencil"></i>';
 
     var this_ = this;
     /*
-    Opens Modal
+    Load edit view
     */
     var openEditModal = function(e) {
-        $('#filterModal').modal('toggle');
+        window.location = "/edit/" + window.location.hash;
     };
 
     button.addEventListener('click', openEditModal, false);
@@ -245,8 +249,6 @@ function Map(data, renderlocation) {
         this.m.getView().setRotation(event.state.rotation);
         shouldUpdate = false;
       });
-
-
         /*==========================================*/
         //updatelayer () -- update layer features
         /*==========================================*/
@@ -264,6 +266,25 @@ function Map(data, renderlocation) {
                 }
 
             }
+        /*==========================================*/
+        //moveToPoint() -- pans map to inputted ol.point coords
+        /*==========================================*/
+        this.moveToPoint = function(location) {
+            console.log(location);
+       // var  = ol.proj.transform(latlon, 'EPSG:4326', 'EPSG:3857');
+        // bounce by zooming out one level and back in
+        var bounce = ol.animation.bounce({
+          resolution: this.m.getView().getResolution() * 2
+        });
+        // start the pan at the current center of the map
+        var pan = ol.animation.pan({
+          source: this.m.getView().getCenter()
+        });
+        this.m.beforeRender(bounce);
+        this.m.beforeRender(pan);
+        // when we set the center to the new location, the animated move will
+        // trigger the bounce and pan effects
+        this.m.getView().setCenter(location);        }
             /*==========================================*/
             //update() -- redraws map
             /*==========================================*/
@@ -292,6 +313,7 @@ function Map(data, renderlocation) {
             this.update();
 
         }
+        /* onMouseMove over map event handler */
         this.m.on('pointermove', function(evt) {
             this.toggleCategories();
         }, this);
