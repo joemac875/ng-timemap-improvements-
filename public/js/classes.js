@@ -28,7 +28,7 @@ function MapObject(lat, log, title, startDate, endDate, icon, tags, uniqueid) {
     this.visible = true;
     //object methods
     this.LonLat = function() {
-        return new ol.proj.transform([this.lat, this.lon], 'EPSG:4326', 'EPSG:3857');
+       return new ol.proj.transform([this.lat, this.lon], 'EPSG:4326', 'EPSG:3857');
     };
     this.getFeature = function() {
     if(this.visible)
@@ -165,6 +165,19 @@ function Category(elements,title,icon) {
     */
     this.add = function(mapobj) {
         this.elements.push(mapobj);
+    };
+    /*
+    getTags -- returns an array containing all MapObject tags (strings) with no duplicates
+    */
+    this.getTags = function () {
+      var tags = [];
+      for (var i = this.elements.length - 1; i >= 0; i--) {
+       for (var k =  this.elements[i].tags.length - 1; k >= 0; k--) {
+        if ( $.inArray(this.elements[i].tags[k],tags) < 0 )
+         tags.push(this.elements[i].tags[k])
+       };
+      };
+      return tags;
     };
     /*
     getTimelineObject -- returns an array of vis timeline objects for the map

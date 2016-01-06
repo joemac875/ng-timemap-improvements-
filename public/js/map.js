@@ -1,8 +1,8 @@
 var WoosterPoints = new Category([], 'Random Points');
-var myPoint = new MapObject(Math.random() * 360 - 180, Math.random() * 180 - 90, "Myspot", [1, 1, 1992], [03, 02, 2011], "place", [], "aaaaa");
+var myPoint = new MapObject(Math.random() * 360 - 180, Math.random() * 180 - 90, "Myspot", [1, 1, 1992], [03, 02, 2011], "place", ['location'], "aaaaa");
 var myPoint2 = new MapObject(Math.random() * 360 - 180, Math.random() * 180 - 90, "Myspot2", [01, 01, 1940], [03, 11, 1963], "place2", [], "aa3aa");
-var rome = new MapObject(12.5,41.9, "Rome", [01, 01, 1910], [03, 11, 1943], "place2", [], "aa3aa");
-var london = new MapObject(-0.12755,51.5072229, "Jolly Good Olde England", [01, 01, 1877], [03, 11, 1983], "place2", [], "aa3aa");
+var rome = new MapObject(12.5,41.9, "Rome", [01, 01, 1910], [03, 11, 1943], "place2", ['location','place'], "aa3aa");
+var london = new MapObject(-0.12755,51.5072229, "Jolly Good Olde England", [01, 01, 1877], [03, 11, 1983], "place2", ['place'], "aa3aa");
 WoosterPoints.add(london);
 WoosterPoints.add(rome);
 WoosterPoints.add(myPoint2);
@@ -149,6 +149,7 @@ function Map(data, renderlocation) {
         drawFilter -- generates html for filter
         */
     this.drawFilter = function() {
+        /* Create UI and start event listeners for category filters */
             //inject select zone
             var location = document.getElementById("filters");
             var htmlToReturn = "";
@@ -160,7 +161,7 @@ function Map(data, renderlocation) {
             };
             app.visibleCategories = [];
             app.hiddenCategories = [];
-            htmlToReturn += "</select>";
+            htmlToReturn += '</select>';
             location.innerHTML += htmlToReturn;
             var handlers = {
                 afterSelect: function(values) {
@@ -178,6 +179,28 @@ function Map(data, renderlocation) {
             }
             var selectName = String(renderlocation) + '_filters';
             $('select').multiSelect(handlers);
+            /* Now add tag filter UI */
+            var taglocation = document.getElementById("mapObjects");
+            htmlToReturn = '';
+            htmlToReturn +='<div data-placement="bottom" data-toggle="tooltip" title="Filter by tag"  class="tmtagCtrl" style="z-index:999; position: absolute; top: 10px; right: 10px; padding: 5px; background-color: rgba(255,255,255,0.5);"><select id="'+ renderlocation + '_filters_tag">';
+            var tags = [];
+            for (var i = this.mapData.length - 1; i >= 0; i--) {
+                 var categoryTags = this.mapData[i].getTags() || [];
+                 for (var z = categoryTags.length - 1; z >= 0; z--) {
+                    if ( $.inArray(categoryTags[z],tags) < 0 )  {
+                        tags.push(categoryTags[z]);
+                        htmlToReturn += '<option value="'+categoryTags[z]+'">'+categoryTags[z]+'</option>';
+                    }
+                 };
+             };
+             htmlToReturn += '</select>'; 
+             taglocation.innerHTML += htmlToReturn;
+             //add event listener for tag change
+             console.log('#'+renderlocation +'_filters_tag ' + ' option:selected')
+             $( '#'+renderlocation +'_filters_tag ' + ' option:selected' ).change(function() {
+                app.visibleTag = $( this ).text();
+                console.log(app.visibleTag);
+            });
         }
         /*==========================================*/
         //initalize map
