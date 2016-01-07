@@ -9,24 +9,25 @@ eventlisteners:
 select-  timeline element click or tapped
 rangechanged-  timeline is moved by user 
 */
-
 function Timeline(renderpoint,objects,map) {
   /*
     corresponding map to timeline
   */
   this.map = map || {};
     if ((typeof(renderpoint) === 'undefined') || typeof(objects) === 'undefined') {
-    alert('Error: Invalid timeline parameters');
+        alert('Error: Invalid timeline parameters');
     };
   if (debug) console.log(renderpoint,objects);
  // DOM element where the Timeline will be attached
   var container = document.getElementById(String(renderpoint));
   //load data points
   var data = [];
-
   if(objects.constructor === Array) {
     for (var i = objects.length - 1; i >= 0; i--) {
-      data.push(objects[i].getTimelineObject());
+      var tmobjects = objects[i].getTimelineObject(); 
+      for (var p = tmobjects.length - 1; p >= 0; p--) {
+        data.push(tmobjects[p]);
+      };
     };
     } else {
       //only a single category of data exists
@@ -35,6 +36,7 @@ function Timeline(renderpoint,objects,map) {
   /*
      Begin declaration of class variables
   */
+  console.log(data);
   // Create the vis DataSet 
   this.items = new vis.DataSet(data); 
   // Configuration for the Timeline
@@ -84,11 +86,11 @@ function Timeline(renderpoint,objects,map) {
     //get selected object
     var selectedItem = this.parent.items.get(properties.items[0]);
     console.log(selectedItem);
-    //jump to selected object on map if object is valid
-    this.parent.map.moveToPoint(selectedItem.latlon);
-        
+    //jump to selected object on map if object is valid marker
+    if (!(selectedItem.latlon === 'geoJSON' ))
+      this.parent.map.moveToPoint(selectedItem.latlon);
     });
   
 };
   // Create a Timeline
-var timeline = new Timeline('timeline',WoosterPoints,map);
+var timeline = new Timeline('timeline',testmap,map);

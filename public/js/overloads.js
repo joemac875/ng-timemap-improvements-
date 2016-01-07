@@ -35,6 +35,21 @@ Array.prototype.equals = function (array) {
     }       
     return true;
 }
+Array.prototype.cus_unique = function(){
+    var r, o, i, j, t, tt;
+    r = [];
+    o = {};
+    for(i = 0; i < this.length; i++){
+       t = this[i];
+       tt = o[t] = o[t] || [];
+       for(j = 0; j < tt.length; j++)
+           if(tt[j] === this[i])
+               break;
+       if(j == tt.length)
+           r.push(tt[j] = t);
+     }
+     return r;
+}
 // Hide method from for-in loops
 Object.defineProperty(Array.prototype, "equals", {enumerable: false});
 //http://stackoverflow.com/questions/7837456/how-to-compare-arrays-in-javascript

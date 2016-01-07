@@ -1,3 +1,4 @@
+/* Begin Test Code */
 var WoosterPoints = new Category([], 'Random Points');
 var myPoint = new MapObject(Math.random() * 360 - 180, Math.random() * 180 - 90, "Myspot", [1, 1, 1992], [03, 02, 2011], "place", ['location'], "aaaaa");
 var myPoint2 = new MapObject(Math.random() * 360 - 180, Math.random() * 180 - 90, "Myspot2", [01, 01, 1940], [03, 11, 1963], "place2", [], "aa3aa");
@@ -7,8 +8,95 @@ WoosterPoints.add(london);
 WoosterPoints.add(rome);
 WoosterPoints.add(myPoint2);
 WoosterPoints.add(myPoint);
-/*
-/* */
+  var geojsonObject = {
+        'type': 'FeatureCollection',
+        'crs': {
+          'type': 'name',
+          'properties': {
+            'name': 'EPSG:3857'
+          }
+        },
+        'features': [
+          {
+            'type': 'Feature',
+            'geometry': {
+              'type': 'Point',
+              'coordinates': [0, 0]
+            }
+          },
+          {
+            'type': 'Feature',
+            'geometry': {
+              'type': 'LineString',
+              'coordinates': [[4e6, -2e6], [8e6, 2e6]]
+            }
+          },
+          {
+            'type': 'Feature',
+            'geometry': {
+              'type': 'LineString',
+              'coordinates': [[4e6, 2e6], [8e6, -2e6]]
+            }
+          },
+          {
+            'type': 'Feature',
+            'geometry': {
+              'type': 'Polygon',
+              'coordinates': [[[-5e6, -1e6], [-4e6, 1e6], [-3e6, -1e6]]]
+            }
+          },
+          {
+            'type': 'Feature',
+            'geometry': {
+              'type': 'MultiLineString',
+              'coordinates': [
+                [[-1e6, -7.5e5], [-1e6, 7.5e5]],
+                [[1e6, -7.5e5], [1e6, 7.5e5]],
+                [[-7.5e5, -1e6], [7.5e5, -1e6]],
+                [[-7.5e5, 1e6], [7.5e5, 1e6]]
+              ]
+            }
+          },
+          {
+            'type': 'Feature',
+            'geometry': {
+              'type': 'MultiPolygon',
+              'coordinates': [
+                [[[-5e6, 6e6], [-5e6, 8e6], [-3e6, 8e6], [-3e6, 6e6]]],
+                [[[-2e6, 6e6], [-2e6, 8e6], [0, 8e6], [0, 6e6]]],
+                [[[1e6, 6e6], [1e6, 8e6], [3e6, 8e6], [3e6, 6e6]]]
+              ]
+            }
+          },
+          {
+            'type': 'Feature',
+            'geometry': {
+              'type': 'GeometryCollection',
+              'geometries': [
+                {
+                  'type': 'LineString',
+                  'coordinates': [[-5e6, -5e6], [0, -5e6]]
+                },
+                {
+                  'type': 'Point',
+                  'coordinates': [4e6, -5e6]
+                },
+                {
+                  'type': 'Polygon',
+                  'coordinates': [[[1e6, -6e6], [2e6, -4e6], [3e6, -6e6]]]
+                }
+              ]
+            }
+          }
+        ]
+      };
+
+var objectLayer = new geoJSONCategory(geojsonObject, 'test', [05, 03, 1962], [11, 11, 1974],['a tag'], 'abcdjf');
+var testmap = [];
+testmap.push(WoosterPoints);
+testmap.push(objectLayer);
+
+/* End Test Code*/
 
 var debug = true;
 
@@ -26,7 +114,7 @@ var app = window.app;
 /*
     Class FilterButton
     defines an ol3 button which triggers the filter modal
-     */
+*/
 /**
  * @constructor
  * @extends {ol.control.Control}
@@ -307,7 +395,8 @@ function Map(data, renderlocation) {
         this.m.beforeRender(pan);
         // when we set the center to the new location, the animated move will
         // trigger the bounce and pan effects
-        this.m.getView().setCenter(location);        }
+        this.m.getView().setCenter(location); 
+        };
             /*==========================================*/
             //update() -- redraws map
             /*==========================================*/
@@ -315,6 +404,10 @@ function Map(data, renderlocation) {
             this.mapObjects.forEach(this.updateLayer, this);
             this.m.render(); //redraw
         };
+        /*
+        toggleCategories()
+        Hides invisible layers
+        */
         this.toggleCategories = function() {
             //update visible or invisible categories
             if ((app.hasOwnProperty('visibleCategories')) || (app.hasOwnProperty('hiddenCategories'))) {
@@ -344,5 +437,5 @@ function Map(data, renderlocation) {
 
 
 }
-var map = new Map(WoosterPoints, 'map');
+var map = new Map(testmap, 'map');
 map.initalize();
