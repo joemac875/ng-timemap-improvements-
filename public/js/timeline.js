@@ -84,7 +84,7 @@ function Timeline(renderpoint,objects,map) {
    this.tm.on('select', function (properties) {
     //get selected object
     var selectedItem = this.parent.items.get(properties.items[0]);
-    console.log(selectedItem);
+    if (debug) console.log(selectedItem);
     //jump to selected object on map if object is valid marker
     if (!(selectedItem.latlon === 'geoJSON' ))
       this.parent.map.moveToPoint(selectedItem.latlon);

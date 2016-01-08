@@ -430,12 +430,13 @@ function Map(data, renderlocation) {
                     var n = Number(getValue[0]);
                     this.mapData[n].visible = false;
                 };
-            }
             //reset arrays
             app.hiddenCategories = [];
             app.visibleCategories = [];
             //apply updates
             this.update();
+            }
+        
 
         }
         /* onMouseMove over map event handler */

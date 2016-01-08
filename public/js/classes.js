@@ -86,7 +86,7 @@ function MapObject(lat, log, title, startDate, endDate, icon, tags, uniqueid) {
     };
 }
 /*
-geoJSON Category Object Class
+Local geoJSON Category Object Class
 notes:
 geoJSON features themselves DO NOT have individual tags 
 parameters:
@@ -282,7 +282,7 @@ methods:
 
 function RemoteLayer(url, type, title, startDate, endDate,tags, uniqueid) {
     /* Check that remote file exists and is of propert format*/
-    if( !((typeof type ===  "string") && ( (type === 'geoJSON') || (type === 'KML') ) ))
+    if( !((typeof type ===  "string") && ( (type === 'GeoJSON') || (type === 'KML') ) ))
             alert('Error:'+title+"is an invalid type.")
     /*==========================================*/
     /* Declare private variables */
