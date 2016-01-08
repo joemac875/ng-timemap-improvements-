@@ -2,104 +2,403 @@
 var WoosterPoints = new Category([], 'Random Points');
 var myPoint = new MapObject(Math.random() * 360 - 180, Math.random() * 180 - 90, "Myspot", [1, 1, 1992], [03, 02, 2011], "place", ['location'], "aaaaa");
 var myPoint2 = new MapObject(Math.random() * 360 - 180, Math.random() * 180 - 90, "Myspot2", [01, 01, 1940], [03, 11, 1963], "place2", [], "aa3aa");
-var rome = new MapObject(12.5,41.9, "Rome", [01, 01, 1910], [03, 11, 1943], "place2", ['location','place'], "aa3aa");
-var london = new MapObject(-0.12755,51.5072229, "Jolly Good Olde England", [01, 01, 1877], [03, 11, 1983], "place2", ['place'], "aa3aa");
+var rome = new MapObject(12.5, 41.9, "Rome", [01, 01, 1910], [03, 11, 1943], "place2", ['location', 'place'], "aa3aa");
+var london = new MapObject(-0.12755, 51.5072229, "Jolly Good Olde England", [01, 01, 1877], [03, 11, 1983], "place2", ['place'], "aa3aa");
 WoosterPoints.add(london);
 WoosterPoints.add(rome);
 WoosterPoints.add(myPoint2);
 WoosterPoints.add(myPoint);
-  var geojsonObject = {
-        'type': 'FeatureCollection',
-        'crs': {
-          'type': 'name',
-          'properties': {
+var geojsonObject = {
+    'type': 'FeatureCollection',
+    'crs': {
+        'type': 'name',
+        'properties': {
             'name': 'EPSG:3857'
-          }
-        },
-        'features': [
-          {
-            'type': 'Feature',
-            'geometry': {
-              'type': 'Point',
-              'coordinates': [0, 0]
-            }
-          },
-          {
-            'type': 'Feature',
-            'geometry': {
-              'type': 'LineString',
-              'coordinates': [[4e6, -2e6], [8e6, 2e6]]
-            }
-          },
-          {
-            'type': 'Feature',
-            'geometry': {
-              'type': 'LineString',
-              'coordinates': [[4e6, 2e6], [8e6, -2e6]]
-            }
-          },
-          {
-            'type': 'Feature',
-            'geometry': {
-              'type': 'Polygon',
-              'coordinates': [[[-5e6, -1e6], [-4e6, 1e6], [-3e6, -1e6]]]
-            }
-          },
-          {
-            'type': 'Feature',
-            'geometry': {
-              'type': 'MultiLineString',
-              'coordinates': [
-                [[-1e6, -7.5e5], [-1e6, 7.5e5]],
-                [[1e6, -7.5e5], [1e6, 7.5e5]],
-                [[-7.5e5, -1e6], [7.5e5, -1e6]],
-                [[-7.5e5, 1e6], [7.5e5, 1e6]]
-              ]
-            }
-          },
-          {
-            'type': 'Feature',
-            'geometry': {
-              'type': 'MultiPolygon',
-              'coordinates': [
-                [[[-5e6, 6e6], [-5e6, 8e6], [-3e6, 8e6], [-3e6, 6e6]]],
-                [[[-2e6, 6e6], [-2e6, 8e6], [0, 8e6], [0, 6e6]]],
-                [[[1e6, 6e6], [1e6, 8e6], [3e6, 8e6], [3e6, 6e6]]]
-              ]
-            }
-          },
-          {
-            'type': 'Feature',
-            'geometry': {
-              'type': 'GeometryCollection',
-              'geometries': [
-                {
-                  'type': 'LineString',
-                  'coordinates': [[-5e6, -5e6], [0, -5e6]]
-                },
-                {
-                  'type': 'Point',
-                  'coordinates': [4e6, -5e6]
-                },
-                {
-                  'type': 'Polygon',
-                  'coordinates': [[[1e6, -6e6], [2e6, -4e6], [3e6, -6e6]]]
-                }
-              ]
-            }
-          }
-        ]
-      };
-var testjsontwo = {"type":"FeatureCollection",  'crs': {
-          'type': 'name',
-          'properties': {
+        }
+    },
+    'features': [{
+        'type': 'Feature',
+        'geometry': {
+            'type': 'Point',
+            'coordinates': [0, 0]
+        }
+    }, {
+        'type': 'Feature',
+        'geometry': {
+            'type': 'LineString',
+            'coordinates': [
+                [4e6, -2e6],
+                [8e6, 2e6]
+            ]
+        }
+    }, {
+        'type': 'Feature',
+        'geometry': {
+            'type': 'LineString',
+            'coordinates': [
+                [4e6, 2e6],
+                [8e6, -2e6]
+            ]
+        }
+    }, {
+        'type': 'Feature',
+        'geometry': {
+            'type': 'Polygon',
+            'coordinates': [
+                [
+                    [-5e6, -1e6],
+                    [-4e6, 1e6],
+                    [-3e6, -1e6]
+                ]
+            ]
+        }
+    }, {
+        'type': 'Feature',
+        'geometry': {
+            'type': 'MultiLineString',
+            'coordinates': [
+                [
+                    [-1e6, -7.5e5],
+                    [-1e6, 7.5e5]
+                ],
+                [
+                    [1e6, -7.5e5],
+                    [1e6, 7.5e5]
+                ],
+                [
+                    [-7.5e5, -1e6],
+                    [7.5e5, -1e6]
+                ],
+                [
+                    [-7.5e5, 1e6],
+                    [7.5e5, 1e6]
+                ]
+            ]
+        }
+    }, {
+        'type': 'Feature',
+        'geometry': {
+            'type': 'MultiPolygon',
+            'coordinates': [
+                [
+                    [
+                        [-5e6, 6e6],
+                        [-5e6, 8e6],
+                        [-3e6, 8e6],
+                        [-3e6, 6e6]
+                    ]
+                ],
+                [
+                    [
+                        [-2e6, 6e6],
+                        [-2e6, 8e6],
+                        [0, 8e6],
+                        [0, 6e6]
+                    ]
+                ],
+                [
+                    [
+                        [1e6, 6e6],
+                        [1e6, 8e6],
+                        [3e6, 8e6],
+                        [3e6, 6e6]
+                    ]
+                ]
+            ]
+        }
+    }, {
+        'type': 'Feature',
+        'geometry': {
+            'type': 'GeometryCollection',
+            'geometries': [{
+                'type': 'LineString',
+                'coordinates': [
+                    [-5e6, -5e6],
+                    [0, -5e6]
+                ]
+            }, {
+                'type': 'Point',
+                'coordinates': [4e6, -5e6]
+            }, {
+                'type': 'Polygon',
+                'coordinates': [
+                    [
+                        [1e6, -6e6],
+                        [2e6, -4e6],
+                        [3e6, -6e6]
+                    ]
+                ]
+            }]
+        }
+    }]
+};
+var testjsontwo = {
+    "type": "FeatureCollection",
+    'crs': {
+        'type': 'name',
+        'properties': {
             'name': 'EPSG:4326'
-          }
-        },"features":[{"type":"Feature","properties":{},"geometry":{"type":"Polygon","coordinates":[[[-106.69921875,30.29701788337205],[-101.953125,47.517200697839414],[-82.96875,32.10118973232094],[-98.96484375,22.59372606392931],[-106.69921875,30.29701788337205]]]}},{"type":"Feature","geometry":{"type":"Point","coordinates":[-101.04093739762902,-86.03016863577068]},"properties":{}},{"type":"Feature","geometry":{"type":"Point","coordinates":[-51.51189495809376,69.84675179701298]},"properties":{}},{"type":"Feature","geometry":{"type":"Point","coordinates":[56.38943647965789,-41.282402691431344]},"properties":{}},{"type":"Feature","geometry":{"type":"Point","coordinates":[69.67356679961085,6.654403572902083]},"properties":{}},{"type":"Feature","geometry":{"type":"Point","coordinates":[-114.2719176504761,-89.46301551070064]},"properties":{}},{"type":"Feature","geometry":{"type":"Point","coordinates":[-149.82692554593086,-0.3384833363816142]},"properties":{}},{"type":"Feature","geometry":{"type":"Point","coordinates":[150.35305442288518,-87.91453110985458]},"properties":{}},{"type":"Feature","geometry":{"type":"Point","coordinates":[-42.859390592202544,-62.65848599374294]},"properties":{}},{"type":"Feature","geometry":{"type":"Point","coordinates":[-50.68952347151935,-48.45598289743066]},"properties":{}},{"type":"Feature","geometry":{"type":"Point","coordinates":[152.19526053406298,-12.210492719896138]},"properties":{}},{"type":"Feature","geometry":{"type":"Point","coordinates":[128.85919159278274,3.701364453881979]},"properties":{}},{"type":"Feature","geometry":{"type":"Point","coordinates":[24.065079102292657,-14.043619469739497]},"properties":{}},{"type":"Feature","geometry":{"type":"Point","coordinates":[109.50954079627991,-29.211028064601123]},"properties":{}},{"type":"Feature","geometry":{"type":"Point","coordinates":[58.017216911539435,-9.882895709015429]},"properties":{}},{"type":"Feature","geometry":{"type":"Point","coordinates":[153.2333435676992,-21.110124131664634]},"properties":{}},{"type":"Feature","geometry":{"type":"Point","coordinates":[8.962282827124,8.141445270739496]},"properties":{}},{"type":"Feature","geometry":{"type":"Point","coordinates":[95.91306078247726,47.33212533406913]},"properties":{}},{"type":"Feature","geometry":{"type":"Point","coordinates":[-112.69117101095617,-5.1503335777670145]},"properties":{}},{"type":"Feature","geometry":{"type":"Point","coordinates":[23.460896937176585,-47.6066555455327]},"properties":{}},{"type":"Feature","geometry":{"type":"Point","coordinates":[-3.325771875679493,17.559938952326775]},"properties":{}},{"type":"Feature","geometry":{"type":"Point","coordinates":[-175.65565363503993,1.7252455791458488]},"properties":{}},{"type":"Feature","geometry":{"type":"Point","coordinates":[-72.79110889881849,-47.54236198961735]},"properties":{}},{"type":"Feature","geometry":{"type":"Point","coordinates":[-164.5276982523501,-21.909209517762065]},"properties":{}},{"type":"Feature","geometry":{"type":"Point","coordinates":[-104.31224224157631,64.0884802909568]},"properties":{}},{"type":"Feature","geometry":{"type":"Point","coordinates":[-151.24629112891853,37.63951651286334]},"properties":{}},{"type":"Feature","geometry":{"type":"Point","coordinates":[-145.79467859119177,80.82137153483927]},"properties":{}},{"type":"Feature","geometry":{"type":"Point","coordinates":[-117.84385588020086,-24.720377842895687]},"properties":{}},{"type":"Feature","geometry":{"type":"Point","coordinates":[-133.30612683668733,-83.78863922785968]},"properties":{}},{"type":"Feature","geometry":{"type":"Point","coordinates":[-109.34758474119008,51.256497194990516]},"properties":{}},{"type":"Feature","geometry":{"type":"Point","coordinates":[39.94316194206476,41.67303127236664]},"properties":{}},{"type":"Feature","geometry":{"type":"Point","coordinates":[79.18668382801116,-45.3351374482736]},"properties":{}},{"type":"Feature","geometry":{"type":"Point","coordinates":[173.0098856985569,-5.485722189769149]},"properties":{}},{"type":"Feature","geometry":{"type":"Point","coordinates":[-122.39369415678084,3.3247550670057535]},"properties":{}},{"type":"Feature","geometry":{"type":"Point","coordinates":[48.73739071190357,-65.59151181019843]},"properties":{}}]}
-var objectLayer = new geoJSONCategory(geojsonObject, 'test', [05, 03, 1962], [11, 11, 1974],['a tag'], 'abcdjf');
-var objectLayertwo = new geoJSONCategory(testjsontwo, 'yet another test', [06, 14, 1941], [01, 11, 1964],['a tag'], 'abcdjf');
+        }
+    },
+    "features": [{
+        "type": "Feature",
+        "properties": {},
+        "geometry": {
+            "type": "Polygon",
+            "coordinates": [
+                [
+                    [-106.69921875, 30.29701788337205],
+                    [-101.953125, 47.517200697839414],
+                    [-82.96875, 32.10118973232094],
+                    [-98.96484375, 22.59372606392931],
+                    [-106.69921875, 30.29701788337205]
+                ]
+            ]
+        }
+    }, {
+        "type": "Feature",
+        "geometry": {
+            "type": "Point",
+            "coordinates": [-101.04093739762902, -86.03016863577068]
+        },
+        "properties": {}
+    }, {
+        "type": "Feature",
+        "geometry": {
+            "type": "Point",
+            "coordinates": [-51.51189495809376, 69.84675179701298]
+        },
+        "properties": {}
+    }, {
+        "type": "Feature",
+        "geometry": {
+            "type": "Point",
+            "coordinates": [56.38943647965789, -41.282402691431344]
+        },
+        "properties": {}
+    }, {
+        "type": "Feature",
+        "geometry": {
+            "type": "Point",
+            "coordinates": [69.67356679961085, 6.654403572902083]
+        },
+        "properties": {}
+    }, {
+        "type": "Feature",
+        "geometry": {
+            "type": "Point",
+            "coordinates": [-114.2719176504761, -89.46301551070064]
+        },
+        "properties": {}
+    }, {
+        "type": "Feature",
+        "geometry": {
+            "type": "Point",
+            "coordinates": [-149.82692554593086, -0.3384833363816142]
+        },
+        "properties": {}
+    }, {
+        "type": "Feature",
+        "geometry": {
+            "type": "Point",
+            "coordinates": [150.35305442288518, -87.91453110985458]
+        },
+        "properties": {}
+    }, {
+        "type": "Feature",
+        "geometry": {
+            "type": "Point",
+            "coordinates": [-42.859390592202544, -62.65848599374294]
+        },
+        "properties": {}
+    }, {
+        "type": "Feature",
+        "geometry": {
+            "type": "Point",
+            "coordinates": [-50.68952347151935, -48.45598289743066]
+        },
+        "properties": {}
+    }, {
+        "type": "Feature",
+        "geometry": {
+            "type": "Point",
+            "coordinates": [152.19526053406298, -12.210492719896138]
+        },
+        "properties": {}
+    }, {
+        "type": "Feature",
+        "geometry": {
+            "type": "Point",
+            "coordinates": [128.85919159278274, 3.701364453881979]
+        },
+        "properties": {}
+    }, {
+        "type": "Feature",
+        "geometry": {
+            "type": "Point",
+            "coordinates": [24.065079102292657, -14.043619469739497]
+        },
+        "properties": {}
+    }, {
+        "type": "Feature",
+        "geometry": {
+            "type": "Point",
+            "coordinates": [109.50954079627991, -29.211028064601123]
+        },
+        "properties": {}
+    }, {
+        "type": "Feature",
+        "geometry": {
+            "type": "Point",
+            "coordinates": [58.017216911539435, -9.882895709015429]
+        },
+        "properties": {}
+    }, {
+        "type": "Feature",
+        "geometry": {
+            "type": "Point",
+            "coordinates": [153.2333435676992, -21.110124131664634]
+        },
+        "properties": {}
+    }, {
+        "type": "Feature",
+        "geometry": {
+            "type": "Point",
+            "coordinates": [8.962282827124, 8.141445270739496]
+        },
+        "properties": {}
+    }, {
+        "type": "Feature",
+        "geometry": {
+            "type": "Point",
+            "coordinates": [95.91306078247726, 47.33212533406913]
+        },
+        "properties": {}
+    }, {
+        "type": "Feature",
+        "geometry": {
+            "type": "Point",
+            "coordinates": [-112.69117101095617, -5.1503335777670145]
+        },
+        "properties": {}
+    }, {
+        "type": "Feature",
+        "geometry": {
+            "type": "Point",
+            "coordinates": [23.460896937176585, -47.6066555455327]
+        },
+        "properties": {}
+    }, {
+        "type": "Feature",
+        "geometry": {
+            "type": "Point",
+            "coordinates": [-3.325771875679493, 17.559938952326775]
+        },
+        "properties": {}
+    }, {
+        "type": "Feature",
+        "geometry": {
+            "type": "Point",
+            "coordinates": [-175.65565363503993, 1.7252455791458488]
+        },
+        "properties": {}
+    }, {
+        "type": "Feature",
+        "geometry": {
+            "type": "Point",
+            "coordinates": [-72.79110889881849, -47.54236198961735]
+        },
+        "properties": {}
+    }, {
+        "type": "Feature",
+        "geometry": {
+            "type": "Point",
+            "coordinates": [-164.5276982523501, -21.909209517762065]
+        },
+        "properties": {}
+    }, {
+        "type": "Feature",
+        "geometry": {
+            "type": "Point",
+            "coordinates": [-104.31224224157631, 64.0884802909568]
+        },
+        "properties": {}
+    }, {
+        "type": "Feature",
+        "geometry": {
+            "type": "Point",
+            "coordinates": [-151.24629112891853, 37.63951651286334]
+        },
+        "properties": {}
+    }, {
+        "type": "Feature",
+        "geometry": {
+            "type": "Point",
+            "coordinates": [-145.79467859119177, 80.82137153483927]
+        },
+        "properties": {}
+    }, {
+        "type": "Feature",
+        "geometry": {
+            "type": "Point",
+            "coordinates": [-117.84385588020086, -24.720377842895687]
+        },
+        "properties": {}
+    }, {
+        "type": "Feature",
+        "geometry": {
+            "type": "Point",
+            "coordinates": [-133.30612683668733, -83.78863922785968]
+        },
+        "properties": {}
+    }, {
+        "type": "Feature",
+        "geometry": {
+            "type": "Point",
+            "coordinates": [-109.34758474119008, 51.256497194990516]
+        },
+        "properties": {}
+    }, {
+        "type": "Feature",
+        "geometry": {
+            "type": "Point",
+            "coordinates": [39.94316194206476, 41.67303127236664]
+        },
+        "properties": {}
+    }, {
+        "type": "Feature",
+        "geometry": {
+            "type": "Point",
+            "coordinates": [79.18668382801116, -45.3351374482736]
+        },
+        "properties": {}
+    }, {
+        "type": "Feature",
+        "geometry": {
+            "type": "Point",
+            "coordinates": [173.0098856985569, -5.485722189769149]
+        },
+        "properties": {}
+    }, {
+        "type": "Feature",
+        "geometry": {
+            "type": "Point",
+            "coordinates": [-122.39369415678084, 3.3247550670057535]
+        },
+        "properties": {}
+    }, {
+        "type": "Feature",
+        "geometry": {
+            "type": "Point",
+            "coordinates": [48.73739071190357, -65.59151181019843]
+        },
+        "properties": {}
+    }]
+}
+var objectLayer = new geoJSONCategory(geojsonObject, 'test', [05, 03, 1962], [11, 11, 1974], ['a tag'], 'abcdjf');
+var objectLayertwo = new geoJSONCategory(testjsontwo, 'yet another test', [06, 14, 1941], [01, 11, 1964], ['a tag'], 'abcdjf');
 var remoteKML = "http://localhost:9250/GeoJSON.js";
-var remoteLayertest = new RemoteLayer(remoteKML,'GeoJSON','New Test',[05, 03, 1922], [11, 11, 1934],['ye olde tag!','ye olde tag!'], 'abcdjf')
+var remoteLayertest = new RemoteLayer(remoteKML, 'GeoJSON', 'New Test', [05, 03, 1922], [11, 11, 1934], ['ye olde tag!', 'ye olde tag!'], 'abcdjf')
 var testmap = [];
 testmap.push(WoosterPoints);
 testmap.push(objectLayer);
@@ -130,7 +429,7 @@ var app = window.app;
  * @param {Object=} opt_options Control options.
  * @param {Object=} caller
  */
-app.FilterButton = function(opt_options,parent) {
+app.FilterButton = function(opt_options, parent) {
 
     var options = opt_options || {};
     var buttonParent = parent || {};
@@ -149,7 +448,7 @@ app.FilterButton = function(opt_options,parent) {
     On Modal Close, Filter results
     */
     var closeFilter = function() {
-      app.map.toggleCategories();
+        app.map.toggleCategories();
     }
     $('#filterModal').on('hidden.bs.modal', closeFilter);
     button.addEventListener('click', openFilter, false);
@@ -176,7 +475,7 @@ ol.inherits(app.FilterButton, ol.control.Control);
  * @extends {ol.control.Control}
  * @param {Object=} opt_options Control options.
  */
-app.EditButton = function(opt_options,parent) {
+app.EditButton = function(opt_options, parent) {
     var options = opt_options || {};
     var button = document.createElement('button');
     button.innerHTML = '<i data-toggle="tooltip" title="Edit" data-placement="right"  class="fa fa-pencil"></i>';
@@ -252,7 +551,7 @@ function Map(data, renderlocation) {
         drawFilter -- generates html for filter
         */
     this.drawFilter = function() {
-        /* Create UI and start event listeners for category filters */
+            /* Create UI and start event listeners for category filters */
             //inject select zone
             var location = document.getElementById("filters");
             var htmlToReturn = "";
@@ -269,13 +568,13 @@ function Map(data, renderlocation) {
             var handlers = {
                 afterSelect: function(values) {
                     //set as invsibile
-               
-                        app.hiddenCategories.push(values);
+
+                    app.hiddenCategories.push(values);
                 },
                 afterDeselect: function(values) {
                     //set category as visible again
-    
-                        app.visibleCategories.push(values);
+
+                    app.visibleCategories.push(values);
                 }
 
 
@@ -285,33 +584,33 @@ function Map(data, renderlocation) {
             /* Now add tag filter UI */
             var taglocation = document.getElementById("mapObjects");
             htmlToReturn = '';
-            htmlToReturn +='<div data-placement="bottom" data-toggle="tooltip" title="Filter by tag"  class="tmtagCtrl" style="z-index:999; position: absolute; top: 10px; right: 10px; padding: 5px; background-color: rgba(255,255,255,0.5);"><select id="'+ renderlocation + '_filters_tag">';
+            htmlToReturn += '<div data-placement="bottom" data-toggle="tooltip" title="Filter by tag"  class="tmtagCtrl" style="z-index:999; position: absolute; top: 10px; right: 10px; padding: 5px; background-color: rgba(255,255,255,0.5);"><select id="' + renderlocation + '_filters_tag">';
             var tags = [];
             for (var i = this.mapData.length - 1; i >= 0; i--) {
-                 var categoryTags = this.mapData[i].getTags() || [];
-                 for (var z = categoryTags.length - 1; z >= 0; z--) {
-                    if ( $.inArray(categoryTags[z],tags) < 0 )  {
+                var categoryTags = this.mapData[i].getTags() || [];
+                for (var z = categoryTags.length - 1; z >= 0; z--) {
+                    if ($.inArray(categoryTags[z], tags) < 0) {
                         tags.push(categoryTags[z]);
-                        htmlToReturn += '<option value="'+categoryTags[z]+'">'+categoryTags[z]+'</option>';
+                        htmlToReturn += '<option value="' + categoryTags[z] + '">' + categoryTags[z] + '</option>';
                     }
-                 };
-             };
-             htmlToReturn += '</select>'; 
-             taglocation.innerHTML += htmlToReturn;
-             //add event listener for tag change
-             console.log('#'+renderlocation +'_filters_tag ' + ' option:selected')
-             $( '#'+renderlocation +'_filters_tag ' + ' option:selected' ).change(function() {
-                app.visibleTag = $( this ).text();
+                };
+            };
+            htmlToReturn += '</select>';
+            taglocation.innerHTML += htmlToReturn;
+            //add event listener for tag change
+            console.log('#' + renderlocation + '_filters_tag ' + ' option:selected')
+            $('#' + renderlocation + '_filters_tag ' + ' option:selected').change(function() {
+                app.visibleTag = $(this).text();
                 console.log(app.visibleTag);
             });
         }
         /*==========================================*/
         //initalize map
         /*==========================================*/
-    // default zoom, center and rotation
-      var zoom = 2;
-      var center = [0, 0];
-      var rotation = 0;
+        // default zoom, center and rotation
+    var zoom = 2;
+    var center = [0, 0];
+    var rotation = 0;
     this.initalize = function() {
         this.generateOlLayers();
         this.drawFilter();
@@ -324,7 +623,7 @@ function Map(data, renderlocation) {
                     collapsible: false
                 })
             }).extend([
-                new app.FilterButton({},this),
+                new app.FilterButton({}, this),
                 new app.EditButton()
             ]),
             layers: this.mapObjects,
@@ -339,42 +638,42 @@ function Map(data, renderlocation) {
             var coordinates = this.m.getEventCoordinate(evt.originalEvent);
         }, this);
 
-     var shouldUpdate = true;
-      var view = this.m.getView();
-      var updatePermalink = function() {
-        if (!shouldUpdate) {
-          // do not update the URL when the view was changed in the 'popstate' handler
-          shouldUpdate = true;
-          return;
-        }
+        var shouldUpdate = true;
+        var view = this.m.getView();
+        var updatePermalink = function() {
+            if (!shouldUpdate) {
+                // do not update the URL when the view was changed in the 'popstate' handler
+                shouldUpdate = true;
+                return;
+            }
 
-        var center = view.getCenter();
-        var hash = '#map=' +
-            view.getZoom() + '/' +
-            Math.round(center[0] * 100) / 100 + '/' +
-            Math.round(center[1] * 100) / 100 + '/' +
-            view.getRotation();
-        var state = {
-          zoom: view.getZoom(),
-          center: view.getCenter(),
-          rotation: view.getRotation()
+            var center = view.getCenter();
+            var hash = '#map=' +
+                view.getZoom() + '/' +
+                Math.round(center[0] * 100) / 100 + '/' +
+                Math.round(center[1] * 100) / 100 + '/' +
+                view.getRotation();
+            var state = {
+                zoom: view.getZoom(),
+                center: view.getCenter(),
+                rotation: view.getRotation()
+            };
+            window.history.pushState(state, 'map', hash);
         };
-        window.history.pushState(state, 'map', hash);
-      };
 
-      this.m.on('moveend', updatePermalink);
+        this.m.on('moveend', updatePermalink);
 
-      // restore the view state when navigating through the history, see
-      // https://developer.mozilla.org/en-US/docs/Web/API/WindowEventHandlers/onpopstate
-      window.addEventListener('popstate', function(event) {
-        if (event.state === null) {
-          return;
-        }
-        this.m.getView().setCenter(event.state.center);
-        this.m.getView().setZoom(event.state.zoom);
-        this.m.getView().setRotation(event.state.rotation);
-        shouldUpdate = false;
-      });
+        // restore the view state when navigating through the history, see
+        // https://developer.mozilla.org/en-US/docs/Web/API/WindowEventHandlers/onpopstate
+        window.addEventListener('popstate', function(event) {
+            if (event.state === null) {
+                return;
+            }
+            this.m.getView().setCenter(event.state.center);
+            this.m.getView().setZoom(event.state.zoom);
+            this.m.getView().setRotation(event.state.rotation);
+            shouldUpdate = false;
+        });
         /*==========================================*/
         //updatelayer () -- update layer features
         /*==========================================*/
@@ -392,29 +691,29 @@ function Map(data, renderlocation) {
                 }
 
             }
-        /*==========================================*/
-        //moveToPoint() -- pans map to inputted ol.point coords
-        /*==========================================*/
+            /*==========================================*/
+            //moveToPoint() -- pans map to inputted ol.point coords
+            /*==========================================*/
         this.moveToPoint = function(location) {
             console.log(location);
-       // var  = ol.proj.transform(latlon, 'EPSG:4326', 'EPSG:3857');
-        // bounce by zooming out one level and back in
-        var bounce = ol.animation.bounce({
-          resolution: this.m.getView().getResolution() * 2
-        });
-        // start the pan at the current center of the map
-        var pan = ol.animation.pan({
-          source: this.m.getView().getCenter()
-        });
-        this.m.beforeRender(bounce);
-        this.m.beforeRender(pan);
-        // when we set the center to the new location, the animated move will
-        // trigger the bounce and pan effects
-        this.m.getView().setCenter(location); 
+            // var  = ol.proj.transform(latlon, 'EPSG:4326', 'EPSG:3857');
+            // bounce by zooming out one level and back in
+            var bounce = ol.animation.bounce({
+                resolution: this.m.getView().getResolution() * 2
+            });
+            // start the pan at the current center of the map
+            var pan = ol.animation.pan({
+                source: this.m.getView().getCenter()
+            });
+            this.m.beforeRender(bounce);
+            this.m.beforeRender(pan);
+            // when we set the center to the new location, the animated move will
+            // trigger the bounce and pan effects
+            this.m.getView().setCenter(location);
         };
-            /*==========================================*/
-            //update() -- redraws map
-            /*==========================================*/
+        /*==========================================*/
+        //update() -- redraws map
+        /*==========================================*/
         this.update = function() {
             this.mapObjects.forEach(this.updateLayer, this);
             this.m.render(); //redraw
@@ -439,56 +738,53 @@ function Map(data, renderlocation) {
                     this.mapData[n].visible = false;
                     console.log(this.mapData[n]);
                 };
-            //reset arrays
-            app.hiddenCategories = [];
-            app.visibleCategories = [];
+                //reset arrays
+                app.hiddenCategories = [];
+                app.visibleCategories = [];
             }
             this.update();
-        }
-        /* onMouseMove over map event handler */
-        this.m.on('pointermove', function(evt) {
+        };
+        /*
+        Create a popup window and display when a marker is clicked.
+        */
+        var element = document.getElementById('popup');
+
+        var popup = new ol.Overlay({
+            element: element,
+            positioning: 'bottom-center',
+            stopEvent: false
+        });
+        this.m.addOverlay(popup);
+        // display popup on click
+        this.m.on('click', function(evt) {
+            var feature = this.m.forEachFeatureAtPixel(evt.pixel,
+                function(feature, layer) {
+                    return feature;
+                });
+            if (feature) {
+                popup.setPosition(evt.coordinate);
+                $(element).popover({
+                    'placement': 'top',
+                    'html': true,
+                    'content': feature.get('name')
+                });
+                $(element).popover('show');
+            } else {
+                $(element).popover('destroy');
+            }
         }, this);
-      /* display a popup when the user clicks on a marker*/
-      
-      var element = document.getElementById('popup');
 
-       popup = new ol.Overlay({
-        element: element,
-        positioning: 'bottom-center',
-        stopEvent: false
-      });
-      this.m.addOverlay(popup);
-
-      // display popup on click
-      this.m.on('click', function(evt) {
-        var feature = this.m.forEachFeatureAtPixel(evt.pixel,
-            function(feature, layer) {
-              return feature;
-            });
-        if (feature) {
-          popup.setPosition(evt.coordinate);
-          $(element).popover({
-            'placement': 'top',
-            'html': true,
-            'content': feature.get('html')
-          });
-          $(element).popover('show');
-        } else {
-          $(element).popover('destroy');
-        }
-      },this);
-      // change mouse cursor when over marker
-      this.m.on('pointermove', function(e) {
-        if (e.dragging) {
-          $(element).popover('destroy');
-          return;
-        }
-        var pixel = this.m.getEventPixel(e.originalEvent);
-        var hit = this.m.hasFeatureAtPixel(pixel);
-        this.m.getTarget().style.cursor = hit ? 'pointer' : '';
-      },this);
-    };
-  
+        // change mouse cursor when over marker
+        this.m.on('pointermove', function(e) {
+            if (e.dragging) {
+                $(element).popover('destroy');
+                return;
+            }
+            var pixel = this.m.getEventPixel(e.originalEvent);
+            var hit = this.m.hasFeatureAtPixel(pixel);
+            this.m.getTarget().style.cursor = hit ? 'pointer' : '';
+        }, this);
+    }
 }
 app.map = new Map(testmap, 'map');
 app.map.initalize();
