@@ -106,11 +106,11 @@ methods:
 
 function geoJSONCategory(json, title, startDate, endDate,tags, uniqueid) {
     /* Define private vars */
-      var image = new ol.style.Circle({
+    var image = new ol.style.Circle({
         radius: 5,
         fill: null,
         stroke: new ol.style.Stroke({color: 'red', width: 1})
-      });
+    });
     /* Create a default layout for data */
 var defaultJSONStyle = {
   'Point': new ol.style.Style({

@@ -128,22 +128,30 @@ var app = window.app;
  * @constructor
  * @extends {ol.control.Control}
  * @param {Object=} opt_options Control options.
+ * @param {Object=} caller
  */
-app.FilterButton = function(opt_options) {
+app.FilterButton = function(opt_options,parent) {
 
     var options = opt_options || {};
-
+    var buttonParent = parent || {};
     var button = document.createElement('button');
     button.innerHTML = '<i data-toggle="tooltip" title="Filters" data-placement="right" class="fa fa-filter"></i>';
 
     var this_ = this;
+    console.log(this);
     /*
     Opens Modal
     */
     var openFilter = function(e) {
         $('#filterModal').modal('toggle');
     };
-
+    /*
+    On Modal Close, Filter results
+    */
+    var closeFilter = function() {
+      app.map.toggleCategories();
+    }
+    $('#filterModal').on('hidden.bs.modal', closeFilter);
     button.addEventListener('click', openFilter, false);
     button.addEventListener('touchstart', openFilter, false);
 
@@ -168,10 +176,8 @@ ol.inherits(app.FilterButton, ol.control.Control);
  * @extends {ol.control.Control}
  * @param {Object=} opt_options Control options.
  */
-app.EditButton = function(opt_options) {
-
+app.EditButton = function(opt_options,parent) {
     var options = opt_options || {};
-
     var button = document.createElement('button');
     button.innerHTML = '<i data-toggle="tooltip" title="Edit" data-placement="right"  class="fa fa-pencil"></i>';
 
@@ -318,7 +324,7 @@ function Map(data, renderlocation) {
                     collapsible: false
                 })
             }).extend([
-                new app.FilterButton(),
+                new app.FilterButton({},this),
                 new app.EditButton()
             ]),
             layers: this.mapObjects,
@@ -424,28 +430,65 @@ function Map(data, renderlocation) {
                     var getValue = app.visibleCategories[i];
                     var n = Number(getValue[0]);
                     this.mapData[n].visible = true;
+                    console.log(this.mapData[n]);
+
                 };
                 for (var i = app.hiddenCategories.length - 1; i >= 0; i--) {
                     var getValue = app.hiddenCategories[i];
                     var n = Number(getValue[0]);
                     this.mapData[n].visible = false;
+                    console.log(this.mapData[n]);
                 };
             //reset arrays
             app.hiddenCategories = [];
             app.visibleCategories = [];
-            //apply updates
-            this.update();
             }
-        
-
+            this.update();
         }
         /* onMouseMove over map event handler */
         this.m.on('pointermove', function(evt) {
-            this.toggleCategories();
         }, this);
+      /* display a popup when the user clicks on a marker*/
+      
+      var element = document.getElementById('popup');
+
+       popup = new ol.Overlay({
+        element: element,
+        positioning: 'bottom-center',
+        stopEvent: false
+      });
+      this.m.addOverlay(popup);
+
+      // display popup on click
+      this.m.on('click', function(evt) {
+        var feature = this.m.forEachFeatureAtPixel(evt.pixel,
+            function(feature, layer) {
+              return feature;
+            });
+        if (feature) {
+          popup.setPosition(evt.coordinate);
+          $(element).popover({
+            'placement': 'top',
+            'html': true,
+            'content': feature.get('html')
+          });
+          $(element).popover('show');
+        } else {
+          $(element).popover('destroy');
+        }
+      },this);
+      // change mouse cursor when over marker
+      this.m.on('pointermove', function(e) {
+        if (e.dragging) {
+          $(element).popover('destroy');
+          return;
+        }
+        var pixel = this.m.getEventPixel(e.originalEvent);
+        var hit = this.m.hasFeatureAtPixel(pixel);
+        this.m.getTarget().style.cursor = hit ? 'pointer' : '';
+      },this);
     };
-
-
+  
 }
-var map = new Map(testmap, 'map');
-map.initalize();
+app.map = new Map(testmap, 'map');
+app.map.initalize();

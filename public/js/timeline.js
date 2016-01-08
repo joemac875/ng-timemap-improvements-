@@ -86,10 +86,13 @@ function Timeline(renderpoint,objects,map) {
     var selectedItem = this.parent.items.get(properties.items[0]);
     if (debug) console.log(selectedItem);
     //jump to selected object on map if object is valid marker
-    if (!(selectedItem.latlon === 'geoJSON' ))
+    if (!(typeof selectedItem.latlon === "string" )) {
       this.parent.map.moveToPoint(selectedItem.latlon);
+      //display html field on marker
+      this.parent.map.showHTMLBox(selectedItem.latlon);
+    }
     });
-  
+    
 };
   // Create a Timeline
-var timeline = new Timeline('timeline',testmap,map);
+app.timeline = new Timeline('timeline',testmap,app.map);
