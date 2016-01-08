@@ -87,7 +87,7 @@ function Timeline(renderpoint,objects,map) {
     if (debug) console.log(selectedItem);
     //jump to selected object on map if object is valid marker
     if (!(typeof selectedItem.latlon === "string" )) {
-      this.parent.map.moveToPoint(selectedItem.latlon);
+      this.parent.map.moveToPoint(selectedItem.latlon,selectedItem.html);
       //display html field on marker
     }
     });

@@ -411,8 +411,8 @@ var debug = true;
 /**
  * Define a namespace for the application.
  */
-window.app = {};
-var app = window.app;
+
+var app = {};//window.app;
 
 
 //
@@ -730,8 +730,9 @@ Declare Private Vars
                 function(feature, layer) {
                     return feature;
                 });
+            console.log(feature)
             if (feature) {
-                popup.setPosition(evt.coordinate);
+                popup.setPosition(location);
                 $(element).popover({
                     'placement': 'top',
                     'html': true,
