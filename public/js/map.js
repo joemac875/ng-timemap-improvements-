@@ -605,12 +605,27 @@ function Map(data, renderlocation) {
             });
         }
         /*==========================================*/
-        //initalize map
+        //initalize map 
         /*==========================================*/
+
+/*
+Declare Private Vars
+*/
         // default zoom, center and rotation
     var zoom = 2;
     var center = [0, 0];
     var rotation = 0;
+         /*
+        Create a popup window and display when a marker is clicked.
+        */
+        var element = document.getElementById('popup');
+
+        var popup = new ol.Overlay({
+            element: element,
+            positioning: 'bottom-center',
+            stopEvent: false
+        });
+
     this.initalize = function() {
         this.generateOlLayers();
         this.drawFilter();
@@ -637,7 +652,6 @@ function Map(data, renderlocation) {
         this.m.on('singleclick', function(evt) {
             var coordinates = this.m.getEventCoordinate(evt.originalEvent);
         }, this);
-
         var shouldUpdate = true;
         var view = this.m.getView();
         var updatePermalink = function() {
@@ -660,7 +674,6 @@ function Map(data, renderlocation) {
             };
             window.history.pushState(state, 'map', hash);
         };
-
         this.m.on('moveend', updatePermalink);
 
         // restore the view state when navigating through the history, see
@@ -694,8 +707,7 @@ function Map(data, renderlocation) {
             /*==========================================*/
             //moveToPoint() -- pans map to inputted ol.point coords
             /*==========================================*/
-        this.moveToPoint = function(location) {
-            console.log(location);
+        this.moveToPoint = function(location,html) {
             // var  = ol.proj.transform(latlon, 'EPSG:4326', 'EPSG:3857');
             // bounce by zooming out one level and back in
             var bounce = ol.animation.bounce({
@@ -710,6 +722,25 @@ function Map(data, renderlocation) {
             // when we set the center to the new location, the animated move will
             // trigger the bounce and pan effects
             this.m.getView().setCenter(location);
+            /*
+            Display marker description box
+            */
+            var markerPixel = this.m.getPixelFromCoordinate(location)
+            var feature = this.m.forEachFeatureAtPixel(markerPixel,
+                function(feature, layer) {
+                    return feature;
+                });
+            if (feature) {
+                popup.setPosition(evt.coordinate);
+                $(element).popover({
+                    'placement': 'top',
+                    'html': true,
+                    'content': html
+                });
+                $(element).popover('show');
+            } else {
+                $(element).popover('destroy');
+            }
         };
         /*==========================================*/
         //update() -- redraws map
@@ -744,18 +775,7 @@ function Map(data, renderlocation) {
             }
             this.update();
         };
-        /*
-        Create a popup window and display when a marker is clicked.
-        */
-        var element = document.getElementById('popup');
-
-        var popup = new ol.Overlay({
-            element: element,
-            positioning: 'bottom-center',
-            stopEvent: false
-        });
-        this.m.addOverlay(popup);
-        // display popup on click
+           // display popup on click
         this.m.on('click', function(evt) {
             var feature = this.m.forEachFeatureAtPixel(evt.pixel,
                 function(feature, layer) {
@@ -766,7 +786,7 @@ function Map(data, renderlocation) {
                 $(element).popover({
                     'placement': 'top',
                     'html': true,
-                    'content': feature.get('name')
+                    'content': feature.get('html')
                 });
                 $(element).popover('show');
             } else {
@@ -784,7 +804,8 @@ function Map(data, renderlocation) {
             var hit = this.m.hasFeatureAtPixel(pixel);
             this.m.getTarget().style.cursor = hit ? 'pointer' : '';
         }, this);
-    }
+                    this.m.addOverlay(popup);
+}
 }
 app.map = new Map(testmap, 'map');
 app.map.initalize();

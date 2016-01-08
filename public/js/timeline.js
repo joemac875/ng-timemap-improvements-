@@ -89,7 +89,6 @@ function Timeline(renderpoint,objects,map) {
     if (!(typeof selectedItem.latlon === "string" )) {
       this.parent.map.moveToPoint(selectedItem.latlon);
       //display html field on marker
-      this.parent.map.showHTMLBox(selectedItem.latlon);
     }
     });
     

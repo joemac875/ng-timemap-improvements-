@@ -10,13 +10,14 @@ parameters:
   -icon: html markup for description / icon
   -tags: array of strings
   -visible: should this object be rendered
+  -html: item description
 methods:
     LatLon(): returns latiude and longitude as openlayers lat lon object
     getFeature(): returns openlayers feature object for map object
     getTimelineObject():  returns vis timeline object for point
     getDates(): returns dates for object as js dates
 */
-function MapObject(lat, log, title, startDate, endDate, icon, tags, uniqueid) {
+function MapObject(lat, log, title, startDate, endDate, icon, tags, html) {
     //object properties
     this.lat = lat || 0;
     this.lon = log || 0;
@@ -26,6 +27,7 @@ function MapObject(lat, log, title, startDate, endDate, icon, tags, uniqueid) {
     this.icon = icon || "";
     this.tags = tags || [];
     this.visible = true;
+    this.html = html || "";
     //object methods
     this.LonLat = function() {
        return new ol.proj.transform([this.lat, this.lon], 'EPSG:4326', 'EPSG:3857');
@@ -35,6 +37,7 @@ function MapObject(lat, log, title, startDate, endDate, icon, tags, uniqueid) {
         var iconFeature = new ol.Feature({
             geometry: new ol.geom.Point(ol.proj.transform([this.lat, this.lon], 'EPSG:4326', 'EPSG:3857')),
             name: this.title,
+            html: this.html,
             visible: this.visible,
             tags: this.tags,
             icon: this.icon
@@ -46,6 +49,7 @@ function MapObject(lat, log, title, startDate, endDate, icon, tags, uniqueid) {
     this.getTimelineObject = function() {
         var visObject = {}; //API description @ http://visjs.org/docs/timeline/
         visObject.latlon = this.LonLat(); 
+        visObject.html = this.html;
         //is the object a point or line on the timeline?
         if (this.startDate === this.endDate) {
             visObject.type = 'point';
