@@ -36,7 +36,6 @@ function Timeline(renderpoint,objects,map) {
   /*
      Begin declaration of class variables
   */
-  console.log(data);
   // Create the vis DataSet 
   this.items = new vis.DataSet(data); 
   // Configuration for the Timeline
