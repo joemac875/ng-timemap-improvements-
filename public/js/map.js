@@ -547,6 +547,25 @@ function Map(data, renderlocation) {
                 this.mapObjects.push(layer);
             }
         }
+    this.filterByTags = function(tag) {
+        for (var i = this.mapData.length - 1; i >= 0; i--) {
+            if (this.mapData[i].hasOwnProperty('tags'))
+                for (var k = this.mapData[i].tags.length - 1; k >= 0; k--) {
+                    if(tag === this.mapData[i].tags[k])
+                        this.mapData[i].visible = false;
+                };
+            if (this.mapData[i].hasOwnProperty('elements'))
+                for (var k = this.mapData[i].elements.length - 1; k >= 0; k--) {
+                    if(this.mapData[i].elements[k].hasOwnProperty('tags'))
+                        for (var p = this.mapData[i].elements[k].length - 1; p >= 0; p--) {
+                            if(tag === this.mapData[i].elements[k].tags[p])
+                                this.mapData[i].elements[k].visible = false;
+                        };
+                };
+
+        };
+        this.update();
+    }
         /*
         drawFilter -- generates html for filter
         */
@@ -598,11 +617,12 @@ function Map(data, renderlocation) {
             htmlToReturn += '</select>';
             taglocation.innerHTML += htmlToReturn;
             //add event listener for tag change
-            console.log('#' + renderlocation + '_filters_tag ' + ' option:selected')
-            $('#' + renderlocation + '_filters_tag ' + ' option:selected').change(function() {
-                app.visibleTag = $(this).text();
-                console.log(app.visibleTag);
-            });
+            console.log('#' + renderlocation + '_filters_tag' + ' option:selected')
+            var id = '#'+renderlocation + '_filters_tag';
+
+            $(id).change(function() {
+            app.map.filterByTags($(id+" option:selected").text());
+            });  
         }
         /*==========================================*/
         //initalize map 
@@ -747,7 +767,8 @@ Declare Private Vars
         //update() -- redraws map
         /*==========================================*/
         this.update = function() {
-            this.mapObjects.forEach(this.updateLayer, this);
+            //should a layer or layer object be displayed???
+            this.mapObjects.forEach(this.updateLayer, this); 
             this.m.render(); //redraw
         };
         /*

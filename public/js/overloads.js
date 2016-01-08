@@ -35,6 +35,9 @@ Array.prototype.equals = function (array) {
     }       
     return true;
 }
+/*
+cus_unique() - returns unique elements in array
+*/
 Array.prototype.cus_unique = function(){
     var r, o, i, j, t, tt;
     r = [];
