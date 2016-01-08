@@ -412,7 +412,7 @@ var debug = true;
  * Define a namespace for the application.
  */
 
-var app = {};//window.app;
+var app = {}; //window.app;
 
 
 //
@@ -504,7 +504,7 @@ app.EditButton = function(opt_options, parent) {
 ol.inherits(app.EditButton, ol.control.Control);
 
 /*==========================================*/
-function Map(data, renderlocation) {
+function Map(data, renderlocation, initialmapstate) {
     /*
     renderlocation -- id of div container for map
     */
@@ -519,53 +519,53 @@ function Map(data, renderlocation) {
     */
     this.mapObjects = [];
     /*
-    this.mapData - the orginal object(s) used to generate the map layers
+    this.mapData - the original object(s) used to generate the map layers
     */
     this.mapData = [];
     /*
     generateOlLayers() -- Creates ol layers vector objects for map from Category or array of Category objects and loads them into map objects
     */
     this.generateOlLayers = function() {
-            //add osm layer
-            this.mapObjects.push(new ol.layer.Tile({
-                source: new ol.source.OSM()
-            }));
-            if (data.constructor === Array) {
-                for (var i = data.length - 1; i >= 0; i--) {
-                    var layer = data[i].vectorLayer();
-                    layer.kind = "Category";
-                    layer.tmid = i; //create unique id for access when updating
-                    this.mapObjects.push(layer);
-                    this.mapData[i] = data[i];
-                };
-            } else {
-                //only a single data element exists
-                var layer = data.vectorLayer();
+        //add osm layer
+        this.mapObjects.push(new ol.layer.Tile({
+            source: new ol.source.OSM()
+        }));
+        if (data.constructor === Array) {
+            for (var i = data.length - 1; i >= 0; i--) {
+                var layer = data[i].vectorLayer();
                 layer.kind = "Category";
-                layer.tmid = 0; //create unique id for access when updating
-                this.mapData[0] = data;
+                layer.tmid = i; //create unique id for access when updating
                 this.mapObjects.push(layer);
-            }
+                this.mapData[i] = data[i];
+            };
+        } else {
+            //only a single data element exists
+            var layer = data.vectorLayer();
+            layer.kind = "Category";
+            layer.tmid = 0; //create unique id for access when updating
+            this.mapData[0] = data;
+            this.mapObjects.push(layer);
         }
-    this.filterByTags = function(tag) {
-        for (var i = this.mapData.length - 1; i >= 0; i--) {
-            if (this.mapData[i].hasOwnProperty('tags'))
-                for (var k = this.mapData[i].tags.length - 1; k >= 0; k--) {
-                    if(tag === this.mapData[i].tags[k])
-                        this.mapData[i].visible = false;
-                };
-            if (this.mapData[i].hasOwnProperty('elements'))
-                for (var k = this.mapData[i].elements.length - 1; k >= 0; k--) {
-                    if(this.mapData[i].elements[k].hasOwnProperty('tags'))
-                        for (var p = this.mapData[i].elements[k].length - 1; p >= 0; p--) {
-                            if(tag === this.mapData[i].elements[k].tags[p])
-                                this.mapData[i].elements[k].visible = false;
-                        };
-                };
-
-        };
-        this.update();
     }
+    this.filterByTags = function(tag) {
+            for (var i = this.mapData.length - 1; i >= 0; i--) {
+                if (this.mapData[i].hasOwnProperty('tags'))
+                    for (var k = this.mapData[i].tags.length - 1; k >= 0; k--) {
+                        if (tag === this.mapData[i].tags[k])
+                            this.mapData[i].visible = false;
+                    };
+                if (this.mapData[i].hasOwnProperty('elements'))
+                    for (var k = this.mapData[i].elements.length - 1; k >= 0; k--) {
+                        if (this.mapData[i].elements[k].hasOwnProperty('tags'))
+                            for (var p = this.mapData[i].elements[k].length - 1; p >= 0; p--) {
+                                if (tag === this.mapData[i].elements[k].tags[p])
+                                    this.mapData[i].elements[k].visible = false;
+                            };
+                    };
+
+            };
+            this.update();
+        }
         /*
         drawFilter -- generates html for filter
         */
@@ -604,7 +604,10 @@ function Map(data, renderlocation) {
             var taglocation = document.getElementById("mapObjects");
             htmlToReturn = '';
             htmlToReturn += '<div data-placement="bottom" data-toggle="tooltip" title="Filter by tag"  class="tmtagCtrl" style="z-index:999; position: absolute; top: 10px; right: 10px; padding: 5px; background-color: rgba(255,255,255,0.5);"><select id="' + renderlocation + '_filters_tag">';
-            var tags = [];
+            htmlToReturn += '<option value="!!!!!_ALL_!!!!!!">' +
+                "Show All" + '</option>';
+
+            var tags = []; // a list of unique tags
             for (var i = this.mapData.length - 1; i >= 0; i--) {
                 var categoryTags = this.mapData[i].getTags() || [];
                 for (var z = categoryTags.length - 1; z >= 0; z--) {
@@ -618,33 +621,33 @@ function Map(data, renderlocation) {
             taglocation.innerHTML += htmlToReturn;
             //add event listener for tag change
             console.log('#' + renderlocation + '_filters_tag' + ' option:selected')
-            var id = '#'+renderlocation + '_filters_tag';
-
+            var id = '#' + renderlocation + '_filters_tag';
+            //add event listener for filter change
             $(id).change(function() {
-            app.map.filterByTags($(id+" option:selected").text());
-            });  
+                app.map.filterByTags($(id + " option:selected").text());
+            });
         }
         /*==========================================*/
-        //initalize map 
+        //initialize map 
         /*==========================================*/
 
-/*
-Declare Private Vars
-*/
-        // default zoom, center and rotation
-    var zoom = 2;
-    var center = [0, 0];
-    var rotation = 0;
-         /*
+    /*
+    Declare Private Vars
+    */
+    // default zoom, center and rotation
+    var zoom = initialmapstate.zoom || 2;
+    var center = initialmapstate.center || [0, 0];
+    var rotation = initialmapstate.rotation || 0;
+    /*
         Create a popup window and display when a marker is clicked.
         */
-        var element = document.getElementById('popup');
+    var element = document.getElementById('popup');
 
-        var popup = new ol.Overlay({
-            element: element,
-            positioning: 'bottom-center',
-            stopEvent: false
-        });
+    var popup = new ol.Overlay({
+        element: element,
+        positioning: 'bottom-center',
+        stopEvent: false
+    });
 
     this.initalize = function() {
         this.generateOlLayers();
@@ -727,7 +730,7 @@ Declare Private Vars
             /*==========================================*/
             //moveToPoint() -- pans map to inputted ol.point coords
             /*==========================================*/
-        this.moveToPoint = function(location,html) {
+        this.moveToPoint = function(location, html) {
             // var  = ol.proj.transform(latlon, 'EPSG:4326', 'EPSG:3857');
             // bounce by zooming out one level and back in
             var bounce = ol.animation.bounce({
@@ -768,7 +771,7 @@ Declare Private Vars
         /*==========================================*/
         this.update = function() {
             //should a layer or layer object be displayed???
-            this.mapObjects.forEach(this.updateLayer, this); 
+            this.mapObjects.forEach(this.updateLayer, this);
             this.m.render(); //redraw
         };
         /*
@@ -797,7 +800,7 @@ Declare Private Vars
             }
             this.update();
         };
-           // display popup on click
+        // display popup on click
         this.m.on('click', function(evt) {
             var feature = this.m.forEachFeatureAtPixel(evt.pixel,
                 function(feature, layer) {
@@ -826,8 +829,8 @@ Declare Private Vars
             var hit = this.m.hasFeatureAtPixel(pixel);
             this.m.getTarget().style.cursor = hit ? 'pointer' : '';
         }, this);
-                    this.m.addOverlay(popup);
+        this.m.addOverlay(popup);
+    }
 }
-}
-app.map = new Map(testmap, 'map');
+app.map = new Map(testmap, 'map',{});
 app.map.initalize();
