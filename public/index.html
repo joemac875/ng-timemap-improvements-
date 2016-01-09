@@ -67,10 +67,10 @@ $(document).ready(function(){
   </div>
 </div>
 <!-- end filter modal -->
-   <script src="/plugins/js/jquery.multi-select.js" type="text/javascript"></script>
    <!-- Begin JS includes -->
+   <script src="/plugins/js/jquery.multi-select.js" type="text/javascript"></script>
+    <script src="/js/classes/gDriveLoader.js"></script>
     <script src="/js/lib/overloads.js"></script>
-    <script src="/js/classes/ui.js"></script>
     <script src="/js/classes/ui.js"></script>
     <script src="/js/classes/marker.js"></script>
     <script src="/js/classes/geojsonlayer.js"></script>
@@ -79,14 +79,24 @@ $(document).ready(function(){
     <script src="/js/classes/timeline.js"></script>
     <script src="/js/classes/map.js"></script>
     <script src="/js/timemap.js"></script>
+    <!-- End JS includes -->
+
     <script src="/js/testsuite.js"></script>
     <script>
-    var mytimeline = new timemap({
+
+/**
+ * Define a name space for the application.
+ */
+var app = {};
+//create a time-map instance
+app.mytimeline = new timemap(app,{
 'map':'map',
 'timeline':'timeline',
-'data':testmap,
+'key': "1-g20II9-gdF_k_KozUP3SgwDfmkW2yy7Tb513KAd3UI",
 'debug': true
 });
+//'data':testmap,
+
     </script>
 
     <!--  end includes-->

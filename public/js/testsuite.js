@@ -2,8 +2,8 @@
 var WoosterPoints = new Category([], 'Random Points');
 var myPoint = new MapObject(Math.random() * 360 - 180, Math.random() * 180 - 90, "Myspot", [1, 1, 1992], [03, 02, 2011], "place", ['location'], "aaaaa");
 var myPoint2 = new MapObject(Math.random() * 360 - 180, Math.random() * 180 - 90, "Myspot2", [01, 01, 1940], [03, 11, 1963], "place2", [], "aa3aa");
-var rome = new MapObject(12.5, 41.9, "Rome", [01, 01, 1910], [03, 11, 1943], "place2", ['location', 'place'], "aa3aa");
-var london = new MapObject(-0.12755, 51.5072229, "Jolly Good Olde England", [01, 01, 1877], [03, 11, 1983], "place2", ['place'], "aa3aa");
+var rome = new MapObject(12.5, 41.9, "Rome", [01, 01, 1910], [03, 11, 1943], "place2", ['location', 'place'], "<img src='http://cache-graphicslib.viator.com/graphicslib/thumbs674x446/3731/SITours/skip-the-line-ancient-rome-and-colosseum-half-day-walking-tour-in-rome-114992.jpg'>");
+var london = new MapObject(-0.12755, 51.5072229, "Jolly Good Olde England", [01, 01, 1877], [03, 11, 1983], "place2", ['place'], '<iframe width="120" height="120" src="https://www.youtube.com/embed/tN9EC3Gy6Nk" frameborder="0" allowfullscreen></iframe>');
 WoosterPoints.add(london);
 WoosterPoints.add(rome);
 WoosterPoints.add(myPoint2);
