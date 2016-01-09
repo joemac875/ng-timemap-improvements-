@@ -1,93 +1,7 @@
-//
-// Define map controls.
-//
-/*
-Class FilterButton
-defines an ol3 button which triggers the filter modal
-*/
-/**
- * @constructor
- * @extends {ol.control.Control}
- * @param {Object=} opt_options Control options.
- * @param {Object=} caller
- */
-app.FilterButton = function(opt_options, parent) {
-
-    var options = opt_options || {};
-    var buttonParent = parent || {};
-    var button = document.createElement('button');
-    button.innerHTML = '<i data-toggle="tooltip" title="Filters" data-placement="right" class="fa fa-filter"></i>';
-
-    var this_ = this;
-    console.log(this);
-    /*
-    Opens Modal
-    */
-    var openFilter = function(e) {
-        $('#filterModal').modal('toggle');
-    };
-    /*
-    On Modal Close, Filter results
-    */
-    var closeFilter = function() {
-        timemap.map.toggleCategories();
-    }
-    $('#filterModal').on('hidden.bs.modal', closeFilter);
-    button.addEventListener('click', openFilter, false);
-    button.addEventListener('touchstart', openFilter, false);
-
-    var element = document.createElement('div');
-    element.className = 'filterButton ol-unselectable ol-control';
-    element.timemapendChild(button);
-
-    ol.control.Control.call(this, {
-        element: element,
-        target: options.target
-    });
-
-};
-ol.inherits(timemap.FilterButton, ol.control.Control);
-
-/*
-    Class EditButton
-    defines an ol3 button which triggers the edit modal
-     */
-/**
- * @constructor
- * @extends {ol.control.Control}
- * @param {Object=} opt_options Control options.
- */
-app.EditButton = function(opt_options, parent) {
-    var options = opt_options || {};
-    var button = document.createElement('button');
-    button.innerHTML = '<i data-toggle="tooltip" title="Edit" data-placement="right"  class="fa fa-pencil"></i>';
-
-    var this_ = this;
-    /*
-    Load edit view
-    */
-    var openEditModal = function(e) {
-        window.location = "/edit/" + window.location.hash;
-    };
-
-    button.addEventListener('click', openEditModal, false);
-    button.addEventListener('touchstart', openEditModal, false);
-
-    var element = document.createElement('div');
-    element.className = 'editButton ol-unselectable ol-control';
-    element.timemapendChild(button);
-
-    ol.control.Control.call(this, {
-        element: element,
-        target: options.target
-    });
-
-};
-ol.inherits(timemap.EditButton, ol.control.Control);
 /*==========================================*/
 //define map class
 /*==========================================*/
-function Map(data, renderlocation, initialmapstate) {
+function Map(timemap_instance,data, renderlocation, initialmapstate,debug) {
     /*
     renderlocation -- id of div container for map
     */
@@ -163,20 +77,18 @@ function Map(data, renderlocation, initialmapstate) {
                 htmlToReturn += "<option value='" + i + "'>" + this.mapData[i].title + "</option>";
 
             };
-            timemap.visibleCategories = [];
-            timemap.hiddenCategories = [];
+            app.visibleCategories = [];
+            app.hiddenCategories = [];
             htmlToReturn += '</select>';
             location.innerHTML += htmlToReturn;
             var handlers = {
                 afterSelect: function(values) {
-                    //set as invsibile
-
-                    timemap.hiddenCategories.push(values);
+                    //set as invisible
+                    app.hiddenCategories.push(values);
                 },
                 afterDeselect: function(values) {
                     //set category as visible again
-
-                    timemap.visibleCategories.push(values);
+                    app.visibleCategories.push(values);
                 }
 
 
@@ -207,7 +119,7 @@ function Map(data, renderlocation, initialmapstate) {
             var id = '#' + renderlocation + '_filters_tag';
             //add event listener for filter change
             $(id).change(function() {
-                timemap.map.filterByTags($(id + " option:selected").text());
+                timemap_instance.map.filterByTags($(id + " option:selected").text());
             });
         }
         /*==========================================*/
@@ -244,8 +156,8 @@ function Map(data, renderlocation, initialmapstate) {
                     collapsible: false
                 })
             }).extend([
-                new timemap.FilterButton({}, this),
-                new timemap.EditButton()
+                new timemap_instance.FilterButton({}, this),
+                new timemap_instance.EditButton()
             ]),
             layers: this.mapObjects,
             target: document.getElementById(String(this.renderlocation)),
@@ -363,23 +275,23 @@ function Map(data, renderlocation, initialmapstate) {
         */
         this.toggleCategories = function() {
             //update visible or invisible categories
-            if ((timemap.hasOwnProperty('visibleCategories')) || (timemap.hasOwnProperty('hiddenCategories'))) {
-                for (var i = timemap.visibleCategories.length - 1; i >= 0; i--) {
-                    var getValue = timemap.visibleCategories[i];
+            if ((timemap_instance.hasOwnProperty('visibleCategories')) || (timemap_instance.hasOwnProperty('hiddenCategories'))) {
+                for (var i = timemap_instance.visibleCategories.length - 1; i >= 0; i--) {
+                    var getValue = timemap_instance.visibleCategories[i];
                     var n = Number(getValue[0]);
                     this.mapData[n].visible = true;
                     console.log(this.mapData[n]);
 
                 };
-                for (var i = timemap.hiddenCategories.length - 1; i >= 0; i--) {
-                    var getValue = timemap.hiddenCategories[i];
+                for (var i = timemap_instance.hiddenCategories.length - 1; i >= 0; i--) {
+                    var getValue = timemap_instance.hiddenCategories[i];
                     var n = Number(getValue[0]);
                     this.mapData[n].visible = false;
                     console.log(this.mapData[n]);
                 };
                 //reset arrays
-                timemap.hiddenCategories = [];
-                timemap.visibleCategories = [];
+                timemap_instance.hiddenCategories = [];
+                timemap_instance.visibleCategories = [];
             }
             this.update();
         };

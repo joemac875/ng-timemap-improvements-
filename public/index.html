@@ -48,7 +48,6 @@ $(document).ready(function(){
     <div id="timeline"><div id="popup"></div></div>
 </footer>
  
-    <!-- begin filter modal -->
 
     <!-- Modal -->
 <div class="modal fade" id="filterModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
@@ -69,12 +68,27 @@ $(document).ready(function(){
 </div>
 <!-- end filter modal -->
    <script src="/plugins/js/jquery.multi-select.js" type="text/javascript"></script>
-   <!-- Begin JS includes
-    <script src="/js/transitions.js"></script>-->
-    <script src="/js/overloads.js"></script>
-    <script src="/js/classes.js"></script>
-    <script src="/js/map.js"></script>
-    <script src="/js/timeline.js"></script>
+   <!-- Begin JS includes -->
+    <script src="/js/lib/overloads.js"></script>
+    <script src="/js/classes/ui.js"></script>
+    <script src="/js/classes/ui.js"></script>
+    <script src="/js/classes/marker.js"></script>
+    <script src="/js/classes/geojsonlayer.js"></script>
+    <script src="/js/classes/makerset.js"></script>
+    <script src="/js/classes/remotelayer.js"></script>
+    <script src="/js/classes/timeline.js"></script>
+    <script src="/js/classes/map.js"></script>
+    <script src="/js/timemap.js"></script>
+    <script src="/js/testsuite.js"></script>
+    <script>
+    var mytimeline = new timemap({
+'map':'map',
+'timeline':'timeline',
+'data':testmap,
+'debug': true
+});
+    </script>
+
     <!--  end includes-->
      
   </body>
