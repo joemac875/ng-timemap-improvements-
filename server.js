@@ -21,8 +21,16 @@ var server = http.createServer(app).listen(port, host, function() {
 app.get('/', function(req, res) {
   res.sendfile('./public/index.html')
 });
+//load the admin view (requires authentication)
 app.get('/edit/', function(req, res) {
-  res.sendfile('./public/index.html')
+  res.sendfile('./public/edit.html')
+});
+/*
+Built in Google Drive CORS Proxy
+*/
+app.get('/gproxy/:key', function(req, res) {
+      console.log(req.params.key);
+
 });
 //serve the static components
 app.use(express.static('public'));
