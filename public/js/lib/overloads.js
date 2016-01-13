@@ -92,3 +92,6 @@ function insertParam(key, value)
     //this will reload the page, it's likely better to store this until finished
     document.location.search = kvp.join('&'); 
 }
+function getURLParameter(name) {
+  return decodeURIComponent((new RegExp('[?|&]' + name + '=' + '([^&;]+?)(&|#|;|$)').exec(location.search)||[,""])[1].replace(/\+/g, '%20'))||null
+}

@@ -31,6 +31,7 @@ function Category(elements,title,style) {
     this.title = title || guid();
     this.elements = elements || [];
     this.markerStyle =  style || defaultMarkerStyle;
+    console.log(this.markerStyle);
     /*==========================================*/
     //methods
     /*==========================================*/
@@ -44,8 +45,9 @@ function Category(elements,title,style) {
         iconFeatures.kind = 'ol.source.Vector';
         // store the ol features
         for (var i = this.elements.length - 1; i >= 0; i--) {
-            if ( this.elements[i].visible === true )
+            if ( this.elements[i].visible === true ) {
                 iconFeatures.addFeature(this.elements[i].getFeature());
+            }
         };
         return iconFeatures
     };

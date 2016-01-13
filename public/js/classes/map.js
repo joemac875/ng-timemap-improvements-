@@ -1,7 +1,7 @@
 /*==========================================*/
 //define map class
 /*==========================================*/
-function Map(timemap_instance,data, renderlocation, initialmapstate,debug) {
+function Map( timemap_instance, data, renderlocation, initialmapstate, debug ) {
     /*
     renderlocation -- id of div container for map
     */

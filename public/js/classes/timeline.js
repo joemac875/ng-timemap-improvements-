@@ -45,7 +45,22 @@ function Timeline(renderpoint,objects,map,debug) {
   this.options = {};
   this.showCurrentTime = false; // do not display bar at the current date
   //get first and last dates to set max and min with
-  this.options.min = data[0].start--;
+  var counter = 0;
+  function findStart(z) {
+    console.log(data[z]);
+  if (data[z].hasOwnProperty("start")) {
+     return data[z].start--;
+   } else {
+    if(z < data.length) {
+      z++;
+      findStart(z);
+    } else {
+      alert('Error: no valid timeline points');
+      return new Date();
+    }
+  }
+}
+  this.options.min = findStart(0);
   /*
       End declaration of class variables
   */
@@ -56,6 +71,7 @@ function Timeline(renderpoint,objects,map,debug) {
                this.options.min = data[i].start;
     }
   }
+  this.options.maxHeight = "500px";
    /* Construct timeline */
    this.tm = new vis.Timeline(container, this.items, this.options);
    /* Add parent object to child for event listeners */

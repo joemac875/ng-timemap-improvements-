@@ -23,7 +23,7 @@ app.get('/', function(req, res) {
 });
 //load the admin view (requires authentication)
 app.get('/edit/', function(req, res) {
-  res.sendfile('./public/index.html')
+  res.sendfile('./public/edit.html')
 });
 /*
 Built in Google Drive CORS Proxy
