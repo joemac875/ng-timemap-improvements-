@@ -1,20 +1,19 @@
-# ng-timemap-improvements-
-a google drive based timemap library for nodejs
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+# ng-timemap
+## Quick and easy open source timemaps
 
-::::    ::: ::::::::             ::::::::::::::::::::::::::    :::: :::::::::: 
-:+:+:   :+::+:    :+:                :+:        :+:    +:+:+: :+:+:+:+:        
-:+:+:+  +:++:+                       +:+        +:+    +:+ +:+:+ +:++:+        
-+#+ +:+ +#+:#:       +#++:++#++:++   +#+        +#+    +#+  +:+  +#++#++:++#   
-+#+  +#+#+#+#+   +#+#                +#+        +#+    +#+       +#++#+        
-#+#   #+#+##+#    #+#                #+#        #+#    #+#       #+##+#        
-###    #### ########                 ###    ##############       ############# 
-::::    ::::     :::    :::::::::  
-+:+:+: :+:+:+  :+: :+:  :+:    :+: 
-+:+ +:+:+ +:+ +:+   +:+ +:+    +:+ 
-+#+  +:+  +#++#++:++#++:+#++:++#+  
-+#+       +#++#+     +#++#+        
-#+#       #+##+#     #+##+#        
+
+
+### Setup
+var app = {};
+//create a time-map instance
+app.mytimeline = new timemap(app,{
+'map':'map',
+'timeline':'timeline',
+//'data': testmap,
+'key': "1-g20II9-gdF_k_KozUP3SgwDfmkW2yy7Tb513KAd3UI",
+'debug': true
+});
+
 
 Created by Zach Phillips-Gary (zphillips-gary17@wooster.edu) for the College of Wooster (http://www.woooster.edu).
 
