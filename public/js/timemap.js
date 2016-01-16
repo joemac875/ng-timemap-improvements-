@@ -21,19 +21,26 @@ function timemap(parent, parameters) {
     /*
     Get zoom, latitude, and longitude (and angle) from the hash
     */
+    parent.mapInitalState = {};
     if (window.location.hash.length > 1) {
         var mapparams = window.location.hash.split('/');
+        if (mapparams.length >= 4) {
         //remove the #map= section of the first parameter
         mapparams[0] = mapparams[0].split('=')[1] || 3;
         //get basemap from URL parameter
-        parent.mapInitalState = {};
         parent.mapInitalState.latitude = mapparams[1];
         parent.mapInitalState.longitude = mapparams[2];
         //create center point from latitude and longitude for openlayers
         parent.mapInitalState.center = [parent.mapInitalState.latitude, parent.mapInitalState.longitude];
         parent.mapInitalState.zoom = mapparams[0];
-        parent.mapInitalState.rotation = mapparams[3];
-        console.log(parent.mapInitalState);
+        parent.mapInitalState.rotation = mapparams[3].split('&')[0] || 0;
+        //get initial time frame for visjs
+        parent.mapInitalState.startDate = mapparams[3].split('&')[1] || '';
+        parent.mapInitalState.startDate = parent.mapInitalState.startDate.split('=')[1];
+        parent.mapInitalState.endDate = mapparams[4] || '';
+        } else {
+            console.log('Error: Invalid parameters, cannot render map from supplied data');
+        }   
     }
 /* Add bootstrap modal for filters */
 $( "body" ).append( '    <div class="modal fade" id="filterModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">        <div class="modal-dialog" role="document">            <div class="modal-content">                <div class="modal-header">                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>                    <h4 class="modal-title" id="myModalLabel">Hide or show map layers</h4>                </div>                <div class="modal-body">                    <div id="filters"></div>                </div>                <div class="modal-footer">                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>                </div>            </div>        </div>    </div>' );
@@ -44,7 +51,7 @@ initialize() -- initializes timemap components
 @param{Array}  data -> array of Categories and Layers
 */
 function initialize(parent, data) {
-    
+
     parent.dataset = data.cus_unique();
     /*
     Inject any custom openlayers buttons 

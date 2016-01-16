@@ -76,17 +76,18 @@ function Timeline(renderpoint,objects,map,debug) {
    this.tm = new vis.Timeline(container, this.items, this.options);
    /* Add parent object to child for event listeners */
    this.tm.parent = this;
+    //if resupplied parameters exist, set initial  time-frame
+    if((this.tm.parent.map.parent.hasOwnProperty('startDate')) && this.tm.parent.map.parent.hasOwnProperty('endDate')) {
+        var start = new Date(Number(this.tm.parent.map.parent.startDate));
+        var end = new Date(Number(this.tm.parent.map.parent.endDate));
+        console.log(start,end,this.tm.parent.map.parent)
+              this.tm.setWindow(start, end);
+    }
    /*  Listen for timeline range changes */
     this.tm.on('rangechanged', function (properties) {
-    //apply range change updates to URL
-    var state = {
-      start: properties.start,
-      end: properties.end 
-    };
-    var hash = "&tl="+String(Date.parse(properties.start))+"/"+String(Date.parse(properties.end));
-      window.history.pushState(state, 'timeline', hash);
-       /* set window title */
-      if(debug) console.log(this.parent.map.mapData);
+  /* pass current time frame to map for saving in URL parameter */
+   this.parent.map.tmhash = "&tl="+String(Date.parse(properties.start))+"/"+String(Date.parse(properties.end));
+      /* set window title */
       window.document.title = String(properties.start) + " to "+ String(properties.end);
       /* update visible objects on map */
       for (var i = this.parent.map.mapData.length - 1; i >= 0; i--) {
@@ -103,6 +104,7 @@ function Timeline(renderpoint,objects,map,debug) {
             };
             if(debug) console.log(this.parent);
           };
+          //Update map
             this.parent.map.update();
       }
     })
@@ -114,9 +116,8 @@ function Timeline(renderpoint,objects,map,debug) {
     //jump to selected object on map if object is valid marker
     if (!(typeof selectedItem.latlon === "string" )) {
       this.parent.map.moveToPoint(selectedItem.latlon,selectedItem.html);
-      //display html field on marker
     }
     });
-    
+ 
 };
 

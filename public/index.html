@@ -23,6 +23,7 @@
     <script>
         $(document).ready(function() {
             $('[data-toggle="tooltip"]').tooltip();
+ 
         });
     </script>
 </head>
@@ -79,6 +80,23 @@
             'key': app.key,
             'debug': false
         });
+
+        /* Add sliding effect to timeline */
+
+  $("footer div").animate({bottom: '-205px'});
+$('footer div')
+    .on('mouseenter', function(){
+        var div = $(this);
+        div.stop(true, true).animate({ 
+            height: "+=120"
+        }, 'fast');
+    })
+    .on('mouseleave', function(){
+        var div = $(this);
+        div.stop(true, true).animate({ 
+            height: "-=120"
+        }, 'fast');
+    })
     </script>
 
 <!-- Modal -->
