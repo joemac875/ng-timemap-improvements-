@@ -3,6 +3,10 @@
 /*==========================================*/
 function Map( timemap_instance, data, renderlocation, initialmapstate, debug ) {
     /*
+    parent -- reference to parent timemap object
+    */
+    this.parent  = timemap_instance;
+    /*
     renderlocation -- id of div container for map
     */
     this.renderlocation = renderlocation || '';
@@ -25,7 +29,7 @@ function Map( timemap_instance, data, renderlocation, initialmapstate, debug ) {
     this.generateOlLayers = function() {
         //add osm layer
         this.mapObjects.push(new ol.layer.Tile({
-            source: new ol.source.OSM()
+         source: new ol.source.OSM(),
 
         }));
         if (data.constructor === Array) {
@@ -122,6 +126,8 @@ function Map( timemap_instance, data, renderlocation, initialmapstate, debug ) {
             $(id).change(function() {
                 timemap_instance.map.filterByTags($(id + " option:selected").text());
             });
+
+
         }
         /*==========================================*/
         //initialize map 
@@ -173,14 +179,21 @@ function Map( timemap_instance, data, renderlocation, initialmapstate, debug ) {
             view: new ol.View({
                 center: center,
                 zoom: zoom,
-                rotation: rotation
+                rotation: rotation,
             })
         });
+        //add tooltips 
+        $('[data-toggle="tooltip"]').tooltip();
         //add a click event listener
         this.m.on('singleclick', function(evt) {
             var coordinates = this.m.getEventCoordinate(evt.originalEvent);
-            console.log(coordinates)
             console.log(ol.proj.transform([coordinates[0], coordinates[1]], 'EPSG:3857', new ol.source.OSM().getProjection()));
+            /*
+            If instance is in edit mode
+            */
+            if (this.parent.edit) 
+                    this.parent.newMarker = coordinates;
+
         }, this);
         var shouldUpdate = true;
         var view = this.m.getView();

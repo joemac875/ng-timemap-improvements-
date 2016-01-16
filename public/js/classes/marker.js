@@ -17,8 +17,8 @@ methods:
 */
 function MapObject(lat, log, title, startDate, endDate, icon, tags, html) {
     //object properties
-    this.lat = lat || 0;
-    this.lon = log || 0;
+    this.lat = parseFloat(lat) || 0;
+    this.lon = parseFloat(log) || 0;
     this.title = title;
     this.startDate = startDate || [];
     this.endDate = endDate || [];
@@ -28,20 +28,13 @@ function MapObject(lat, log, title, startDate, endDate, icon, tags, html) {
     this.html = html || "";
     //object methods
     this.LonLat = function() {
-        //console.log(ol.proj.transform([this.lat, this.lon], 'EPSG:3857', new ol.source.OSM().getProjection());
-            return [this.lat, this.lon];
-          ///  return new ol.proj.transform([this.lat, this.lon], 'EPSG:3857', new ol.source.OSM().getProjection());
+            return new ol.proj.transform([this.lon, this.lat], 'EPSG:4326', 'EPSG:3857')
     };
     this.getFeature = function() {
-                console.log(new ol.source.OSM().getProjection());
-
-       // console.log("original",[this.lat, this.lon]);
-     //   console.log("transform",ol.proj.transform([this.lat, this.lon], 'EPSG:3857', new ol.source.OSM().getProjection()));
+    console.log(ol.proj.transform([this.lon, this.lat], 'EPSG:4326', 'EPSG:3857'));
     if(this.visible)
         var iconFeature = new ol.Feature({//EPSG:4326
-            //ol.proj.transform([this.lat, this.lon], 'EPSG:3857', 'EPSG:4326')
-      //  geometry: new ol.geom.Point(ol.proj.transform([this.lon, this.lat], 'EPSG:3857', 'EPSG:4326')),
-         geometry: new ol.geom.Point([this.lat, this.lon]),
+            geometry: new ol.geom.Point(ol.proj.transform([this.lon, this.lat], 'EPSG:4326', 'EPSG:3857')),//ol.proj.transform([this.lon, this.lat], 'EPSG:4326', 'EPSG:3857')),//ol.proj.transform([this.lon, this.lat], 'EPSG:4326', 'EPSG:3857')),
             name: this.title,
             html: this.html,
             visible: this.visible,
