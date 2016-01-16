@@ -217,10 +217,16 @@ function Map(data, renderlocation, initialmapstate) {
     /*
     Declare Private Vars
     */
-    // default zoom, center and rotation
-    var zoom = initialmapstate.zoom || 2;
-    var center = initialmapstate.center || [0, 0];
-    var rotation = initialmapstate.rotation || 0;
+    var zoom = 2;
+    var center = [0, 0];
+    var rotation = 0;
+    
+    if (typeof initialmapstate !== 'undefined') {
+        // default zoom, center and rotation
+        zoom = initialmapstate.zoom;
+        center = initialmapstate.center;
+        rotation = initialmapstate.rotation;
+    }
     /*
         Create a popup window and display when a marker is clicked.
         */

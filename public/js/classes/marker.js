@@ -28,13 +28,20 @@ function MapObject(lat, log, title, startDate, endDate, icon, tags, html) {
     this.html = html || "";
     //object methods
     this.LonLat = function() {
-     return new ol.proj.transform([this.lat, this.lon], 'EPSG:4326', 'EPSG:3857');
-  
+        //console.log(ol.proj.transform([this.lat, this.lon], 'EPSG:3857', new ol.source.OSM().getProjection());
+            return [this.lat, this.lon];
+          ///  return new ol.proj.transform([this.lat, this.lon], 'EPSG:3857', new ol.source.OSM().getProjection());
     };
     this.getFeature = function() {
+                console.log(new ol.source.OSM().getProjection());
+
+       // console.log("original",[this.lat, this.lon]);
+     //   console.log("transform",ol.proj.transform([this.lat, this.lon], 'EPSG:3857', new ol.source.OSM().getProjection()));
     if(this.visible)
         var iconFeature = new ol.Feature({//EPSG:4326
-            geometry: new ol.geom.Point(ol.proj.transform([this.lat, this.lon], 'EPSG:4326', 'EPSG:3857')),
+            //ol.proj.transform([this.lat, this.lon], 'EPSG:3857', 'EPSG:4326')
+      //  geometry: new ol.geom.Point(ol.proj.transform([this.lon, this.lat], 'EPSG:3857', 'EPSG:4326')),
+         geometry: new ol.geom.Point([this.lat, this.lon]),
             name: this.title,
             html: this.html,
             visible: this.visible,
@@ -45,6 +52,9 @@ function MapObject(lat, log, title, startDate, endDate, icon, tags, html) {
         var iconFeature = false;
         return iconFeature;
     };
+    /*
+    Constructs and returns visjs timeline item object
+    */
     this.getTimelineObject = function() {
         var visObject = {}; //API description @ http://visjs.org/docs/timeline/
         visObject.latlon = this.LonLat(); 

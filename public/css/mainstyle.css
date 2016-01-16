@@ -1,13 +1,30 @@
 .map {
-   cursor: default;
-  height: 100em;
-  margin: 0 !important;
-  padding: 0 !important;
-  width: 100%;
-  z-index: 0;
-    }
-    #timeline {
+    cursor: default;
+    height: 100em;
+    margin: 0!important;
+    padding: 0!important;
+    width: 100%;
+    z-index:0;
+}
+#timeline {
     position: fixed;
     bottom: 0;
-    width: 100%;
-    }
+    width: 100% ;
+}
+.filterButton {
+    top: 65px;
+    left: .5em;
+}
+
+.editButton {
+    top: 95px;
+    left: .5em;
+}
+
+.ol-touch.filterButton {
+    top: 80px;
+}
+
+.ol-touch.editButton {
+    top: 110px;
+}

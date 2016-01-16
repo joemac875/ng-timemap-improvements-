@@ -26,6 +26,7 @@ function Map( timemap_instance, data, renderlocation, initialmapstate, debug ) {
         //add osm layer
         this.mapObjects.push(new ol.layer.Tile({
             source: new ol.source.OSM()
+
         }));
         if (data.constructor === Array) {
             for (var i = data.length - 1; i >= 0; i--) {
@@ -130,9 +131,14 @@ function Map( timemap_instance, data, renderlocation, initialmapstate, debug ) {
     Declare Private Vars
     */
     // default zoom, center and rotation
-    var zoom = initialmapstate.zoom || 2;
-    var center = initialmapstate.center || [0, 0];
-    var rotation = initialmapstate.rotation || 0;
+    var zoom = 2;
+    var center = [0, 0];
+    var rotation =  0;
+    if(typeof initialmapstate !== "undefined") {
+        zoom = initialmapstate.zoom || zoom;
+        center = initialmapstate.center || center;
+        rotation = initialmapstate.rotation || rotation;
+    }
     /*
         Create a popup window and display when a marker is clicked.
         */
@@ -145,17 +151,20 @@ function Map( timemap_instance, data, renderlocation, initialmapstate, debug ) {
     });
 
     this.initalize = function() {
+        //convert input into openlayers format and render filters
         this.generateOlLayers();
         this.drawFilter();
 
         //display only visible map elements
         if (debug) console.log(data.elements);
+        //define the map object
         this.m = new ol.Map({
             controls: ol.control.defaults({
                 attributionOptions: /** @type {olx.control.AttributionOptions} */ ({
                     collapsible: false
                 })
             }).extend([
+            //add custom buttons
                 new timemap_instance.FilterButton({}, this),
                 new timemap_instance.EditButton()
             ]),
@@ -167,8 +176,11 @@ function Map( timemap_instance, data, renderlocation, initialmapstate, debug ) {
                 rotation: rotation
             })
         });
+        //add a click event listener
         this.m.on('singleclick', function(evt) {
             var coordinates = this.m.getEventCoordinate(evt.originalEvent);
+            console.log(coordinates)
+            console.log(ol.proj.transform([coordinates[0], coordinates[1]], 'EPSG:3857', new ol.source.OSM().getProjection()));
         }, this);
         var shouldUpdate = true;
         var view = this.m.getView();
@@ -280,14 +292,14 @@ function Map( timemap_instance, data, renderlocation, initialmapstate, debug ) {
                     var getValue = timemap_instance.visibleCategories[i];
                     var n = Number(getValue[0]);
                     this.mapData[n].visible = true;
-                    console.log(this.mapData[n]);
+                if (debug) console.log(this.mapData[n]);
 
                 };
                 for (var i = timemap_instance.hiddenCategories.length - 1; i >= 0; i--) {
                     var getValue = timemap_instance.hiddenCategories[i];
                     var n = Number(getValue[0]);
                     this.mapData[n].visible = false;
-                    console.log(this.mapData[n]);
+                   if (debug) console.log(this.mapData[n]);
                 };
                 //reset arrays
                 timemap_instance.hiddenCategories = [];

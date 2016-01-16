@@ -78,6 +78,13 @@ function Timeline(renderpoint,objects,map,debug) {
    this.tm.parent = this;
    /*  Listen for timeline range changes */
     this.tm.on('rangechanged', function (properties) {
+    //apply range change updates to URL
+    var state = {
+      start: properties.start,
+      end: properties.end 
+    };
+    var hash = "&tl="+String(Date.parse(properties.start))+"/"+String(Date.parse(properties.end));
+      window.history.pushState(state, 'timeline', hash);
        /* set window title */
       if(debug) console.log(this.parent.map.mapData);
       window.document.title = String(properties.start) + " to "+ String(properties.end);

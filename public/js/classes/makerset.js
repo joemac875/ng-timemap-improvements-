@@ -31,9 +31,8 @@ function Category(elements,title,style) {
     this.title = title || guid();
     this.elements = elements || [];
     this.markerStyle =  style || defaultMarkerStyle;
-    console.log(this.markerStyle);
     /*==========================================*/
-    //methods
+    //public methods
     /*==========================================*/
     /*
     vectorSource - returns an openlayers3 vector containing the category features
@@ -49,7 +48,7 @@ function Category(elements,title,style) {
                 iconFeatures.addFeature(this.elements[i].getFeature());
             }
         };
-        return iconFeatures
+        return iconFeatures;
     };
     /*
     features - returns a list containing the category features
