@@ -24,7 +24,7 @@ function timemap(parent, parameters) {
     parent.mapInitalState = {};
     if (window.location.hash.length > 1) {
         var mapparams = window.location.hash.split('/');
-        if (mapparams.length >= 4) {
+        if (mapparams.length >= 3) {
         //remove the #map= section of the first parameter
         mapparams[0] = mapparams[0].split('=')[1] || 3;
         //get basemap from URL parameter
@@ -76,8 +76,9 @@ Check to see if timemap data is manually supplied or needs to be loaded via key.
 */
 if ((parameters.hasOwnProperty('data')) && (parameters['data'].constructor === Array)) {
     initialize(parent, parameters['data'])
-        //if ((parameters.)) && (typeof parameters['key'] ===  'String')) {
 } else {
+    /*
+    */
     gDriveLoader(parameters['key'], initialize, parent);
 
 }

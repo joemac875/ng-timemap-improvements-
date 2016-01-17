@@ -47,7 +47,6 @@ function Timeline(renderpoint,objects,map,debug) {
   //get first and last dates to set max and min with
   var counter = 0;
   function findStart(z) {
-    console.log(data[z]);
   if (data[z].hasOwnProperty("start")) {
      return data[z].start--;
    } else {

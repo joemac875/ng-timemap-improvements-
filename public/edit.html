@@ -3,7 +3,6 @@
 
 <head>
     <title>COW Mapping Tool</title>
-    <link rel="stylesheet" href="/css/mainstyle.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/vis/4.11.0/vis.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vis/4.11.0/vis.min.css" type="text/css">
     <link rel="stylesheet" href="http://openlayers.org/en/v3.12.1/css/ol.css" type="text/css">
@@ -19,27 +18,31 @@
     <!-- Latest compiled and minified JavaScript -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
     <link href="/plugins/css/multi-select.css" media="screen" rel="stylesheet" type="text/css">
+    <script src="/js/classes/gDriveSelector.js"></script>
+      <script src="https://apis.google.com/js/client.js?onload=checkAuth">
+    </script>
 </head>
 
 <body>
 
-    <div id="output"></div>
-    <main class="page-row page-row-expanded">
-        <div id="mapObjects"></div>
-        <div id="map" class="map"></div>
-    </main>
-    <footer class="page-row">
-        <div id="timeline">
-            <div id="popup"></div>
-        </div>
-    </footer>
+      <div id="authorize-div" style="display: none">
+       <button type="button" class="btn btn-danger btn-block" id="authorize-button" onclick="handleAuthClick(event)">Authorize access to Google Drive API</button>
 
+    </div>
+<div class="alert alert-dismissible alert-info">
+  <button type="button" class="close" data-dismiss="alert">&close;</button>
+  <strong>Edit Mode</strong><!-- This <a href="#" class="alert-link">alert needs your attention</a>, but it's not super important. -->
+ 
 
-
+  <div data-toggle="tooltip" title="Load a spreadsheet from your Google Drive account." data-placement="bottom" class="btn-group">
+  <a href="#" data-toggle="tooltip" title="Use this tool to add data to your spreadsheet." data-placement="bottom" class="btn btn-info">Load</a>
+  <a href="#" class="btn btn-info dropdown-toggle" data-toggle="dropdown"><span class="caret"></span></a>
+  <ul  id="googleSheets" class="dropdown-menu">
+  </ul>
+</div>
     <!-- end filter modal -->
     <!-- Begin JS includes -->
     <script src="/plugins/js/jquery.multi-select.js" type="text/javascript"></script>
-    <script src="/js/classes/gDriveSelector.js"></script>
     <script src="/js/classes/gDriveLoader.js"></script>
     <script src="/js/lib/overloads.js"></script>
     <script src="/js/classes/ui.js"></script>
@@ -50,6 +53,7 @@
     <script src="/js/classes/timeline.js"></script>
     <script src="/js/classes/map.js"></script>
     <script src="/js/timemap.js"></script>
+    <script src="/js/classes/editor.js"></script>
     <!-- End JS includes -->
 
     <script src="/js/testsuite.js"></script>
@@ -74,8 +78,80 @@
             'key': app.key,
             'debug': false
         });
+        app.edit = new editor(app, {
+          'key': app.key,
+          'injectionpoint': '#map-view'
+        });
     </script>
+  <div class="btn-group">
+  <a href="#" data-toggle="tooltip" title="Use this tool to add data to your spreadsheet." data-placement="bottom" class="btn btn-primary">Add / Remove</a>
+  <a href="#" class="btn btn-primary dropdown-toggle" data-toggle="dropdown"><span class="caret"></span></a>
+  <ul class="dropdown-menu">
+    <li><a href="javascript:app.edit.addGroup()">Add Group</a></li>
+    <li><a href="javascript:app.edit.addMarker()">Add Marker</a></li>
+    <li><a href="javascript:app.edit.addLayer()">Add Layer</a></li>
+    <li><a href="javascript:app.edit.addImage()">Add Image</a></li>
+    <li class="divider"></li>
+    <li><a href="javascript:app.edit.deleteObject()">Delete</a></li>
+  </ul>
+</div>
+<button type="button" data-toggle="tooltip" title="Use this tool to share your timemap with the rest of the world!" data-placement="bottom"  class="btn btn-success">Share</button>
+<button data-toggle="tooltip" title="Report a bug or view documentation on the project github" data-placement="bottom"  type="button" class="btn btn-warning">Help</button>
 
+</div>
+
+    <div class="container">
+      <div id="map-view" class="row">
+        <div class="col-md-8">
+         <div id="output"></div>
+        <div id="mapObjects"></div>
+        <div id="map" class="map"></div>
+      </div>
+
+      </div>
+    </div>
+
+
+    <footer class="footer">
+      <div class="container">
+             <div id="timeline">
+            <div id="popup"></div>
+              </div>
+      </div>
+    </footer>
+
+
+
+
+
+<!-- Selector Modal -->
+<!-- Modal -->
+<div id="loadSheet" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Select a new spreadsheet</h4>
+      </div>
+      <div class="modal-body">
+        <div id="output"></div>
+
+        <div class="alert alert-info">
+ ng-TimeMap uses a public Google Spreadsheet to store its information. You can either select an <u>empty published spreadsheet</u> or use one you have manually formatted.
+</div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+<!-- end selector modal -->
 <!-- Modal -->
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
   <div class="modal-dialog" role="document">

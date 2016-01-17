@@ -68,7 +68,7 @@ timemap_instance.EditButton = function(opt_options, parent) {
     Load edit view
     */
     var openEditModal = function(e) {
-        window.location = "/edit/" + window.location.hash;
+       window.location = "/edit/" + window.location.search + window.location.hash;
     };
 
     button.addEventListener('click', openEditModal, false);

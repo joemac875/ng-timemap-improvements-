@@ -124,6 +124,7 @@ function Map(timemap_instance, data, renderlocation, initialmapstate, debug) {
             var id = '#' + renderlocation + '_filters_tag';
             //add event listener for filter change
             $(id).change(function() {
+                console.log($(id + " option:selected").text());
                 timemap_instance.map.filterByTags($(id + " option:selected").text());
             });
 
@@ -187,12 +188,37 @@ function Map(timemap_instance, data, renderlocation, initialmapstate, debug) {
         //add a click event listener
         this.m.on('singleclick', function(evt) {
             var coordinates = this.m.getEventCoordinate(evt.originalEvent);
-            console.log(ol.proj.transform([coordinates[0], coordinates[1]], 'EPSG:3857', new ol.source.OSM().getProjection()));
-            /*
-            If instance is in edit mode
-            */
-            if (this.parent.edit)
-                this.parent.newMarker = coordinates;
+            this.parent.selectedPoint = new ol.proj.transform([coordinates[0], coordinates[1]], 'EPSG:3857', 'EPSG:4326');
+           
+            var point = new MapObject(this.parent.selectedPoint[0],this.parent.selectedPoint[1],"New Marker",Date(),Date(),"http://openlayers.org/en/v3.9.0/examples/data/icon.png",[],"Create new marker here?");          
+        
+            var vectorSource = new ol.source.Vector({
+             //create empty vector
+            });
+
+
+             //create the style
+            var iconStyle = new ol.style.Style({
+      image: new ol.style.Icon(/** @type {olx.style.IconOptions} */ ({
+        anchor: [0.5, 46],
+        anchorXUnits: 'fraction',
+        anchorYUnits: 'pixels',
+        opacity: 0.75,
+        src: './css/newmarker.png'
+      }))
+    });
+
+        vectorSource.addFeature(point.getFeature());
+
+    //add the feature vector to the layer vector, and apply a style to whole layer
+    var vectorLayer = new ol.layer.Vector({
+      source: vectorSource,
+      style: iconStyle
+    });
+    
+    this.mapObjects.push(vectorLayer);
+    console.log(this.mapObjects)
+    this.update();
 
         }, this);
         var shouldUpdate = true;
@@ -403,22 +429,42 @@ function Map(timemap_instance, data, renderlocation, initialmapstate, debug) {
     }
     this.filterByTags = function(tag) {
             for (var i = this.mapData.length - 1; i >= 0; i--) {
+                if (this.mapData[i].hasOwnProperty('tags')) {
+                        for (var l = 0; l < this.mapData[l].length; l++) {
+                            console.log(this.mapData[i].tags[l]);
+                            if(this.mapData[i].tags[l] == tag)
+                                this.mapData[i].visible = false;
+                        };
+                } else if (this.mapData[i].hasOwnProperty('elements')){
+                        for (var l = 0; l < this.mapData[i].elements.length; l++) {
+                            if (this.mapData[i].elements[l].hasOwnProperty('tags')) {
+
+                                for (var k = 0; k < this.mapData[i].elements[l].tags.length; k++) {
+                                                                                                        console.log(this.mapData[i].elements[l].tags[k] == tags)
+
+                                        if(this.mapData[i].elements[l].tags[k] == tag);
+                                            this.mapData[i].elements[l].tags[k].visible = false;
+                               }
+                       }
+                        };
+                }
+                /*
                 if (this.mapData[i].hasOwnProperty('tags'))
                     for (var k = this.mapData[i].tags.length - 1; k >= 0; k--) {
                         if (tag === this.mapData[i].tags[k])
                             this.mapData[i].visible = false;
                     };
-                if (this.mapData[i].hasOwnProperty('elements'))
+               if (this.mapData[i].hasOwnProperty('elements'))
                     for (var k = this.mapData[i].elements.length - 1; k >= 0; k--) {
                         if (this.mapData[i].elements[k].hasOwnProperty('tags'))
-                            for (var p = this.mapData[i].elements[k].length - 1; p >= 0; p--) {
+                            for (var p = 0; p < this.mapData[i].elements[k].length; p++) {
                                 if (tag === this.mapData[i].elements[k].tags[p])
                                     this.mapData[i].elements[k].visible = false;
                             };
                     };
-
+        */
             };
-            this.update();
+           this.update();
         }
         /*
         drawFilter -- generates html for filter
@@ -550,7 +596,6 @@ function Map(timemap_instance, data, renderlocation, initialmapstate, debug) {
         var shouldUpdate = true;
         var view = this.m.getView();
         var updatePermalink = function() {
-                        console.log(this);
 
             if (!shouldUpdate) {
                 // do not update the URL when the view was changed in the 'popstate' handler

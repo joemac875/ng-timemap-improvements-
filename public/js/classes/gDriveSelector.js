@@ -1,14 +1,13 @@
-function gDriveSelector(key) {
    // Your Client ID can be retrieved from your project in the Google
       // Developer Console, https://console.developers.google.com
-      var CLIENT_ID = key;
+      var CLIENT_ID = "798899974134-660pmvfnoohepluvt5g5qu5pujclbf62.apps.googleusercontent.com";
 
-      var SCOPES = ['https://www.googleapis.com/auth/drive.metadata.readonly'];
+      var SCOPES = ['https://www.googleapis.com/auth/drive.metadata'];
 
       /**
        * Check if current user has authorized this application.
        */
-      function checkAuth() {
+      var checkAuth = function() {
         gapi.auth.authorize(
           {
             'client_id': CLIENT_ID,
@@ -40,7 +39,7 @@ function gDriveSelector(key) {
        *
        * @param {Event} event Button click event.
        */
-      function handleAuthClick(event) {
+      var handleAuthClick = function(event) {
         gapi.auth.authorize(
           {client_id: CLIENT_ID, scope: SCOPES, immediate: false},
           handleAuthResult);
@@ -51,28 +50,29 @@ function gDriveSelector(key) {
        * Load Drive API client library.
        */
       function loadDriveApi() {
-        gapi.client.load('drive', 'v2', listFiles);
+        gapi.client.load('drive', 'v3', listFiles);
       }
 
       /**
        * Print files.
        */
       function listFiles() {
+        window.googleDriveFiles = [];
         var request = gapi.client.drive.files.list({
-            'pageSize': 10,
+            'pageSize': 60,
+            /* Get only google spreadsheets */
+              'q': "mimeType='application/vnd.google-apps.spreadsheet'",
             'fields': "nextPageToken, files(id, name)"
           });
-
           request.execute(function(resp) {
-            appendPre('Files:');
             var files = resp.files;
             if (files && files.length > 0) {
               for (var i = 0; i < files.length; i++) {
                 var file = files[i];
-                appendPre(file.name + ' (' + file.id + ')');
+                 $( "#googleSheets" ).append( " <li><a href=\"/edit/?&key="+file.id+"\">"+file.name+"</a></li>" );
               }
             } else {
-              appendPre('No files found.');
+              alert('No files found.');
             }
           });
       }
@@ -88,5 +88,4 @@ function gDriveSelector(key) {
         var textContent = document.createTextNode(message + '\n');
         pre.appendChild(textContent);
       }
-
-}
+     
