@@ -86,6 +86,9 @@ function Timeline(renderpoint,objects,map,debug) {
     this.tm.on('rangechanged', function (properties) {
   /* pass current time frame to map for saving in URL parameter */
    this.parent.map.tmhash = "&tl="+String(Date.parse(properties.start))+"/"+String(Date.parse(properties.end));
+   console.log(this.parent);
+
+   this.parent.map.updatePermalinks();
       /* set window title */
       window.document.title = String(properties.start) + " to "+ String(properties.end);
       /* update visible objects on map */

@@ -1,5 +1,5 @@
 
-function gDriveLoader(key,funct,parent) {
+function gDriveLoader(key,onComplete,parent) {
   /*
   The schema object contains the ajax response property names which
   correspond to ng-TimeMap's MapObject class constructor parameters 
@@ -23,8 +23,16 @@ function gDriveLoader(key,funct,parent) {
   */
     var object = {}; // placeholder to keep all values
     for (var property in schema) {
+      /*
+      Google Sheet JSON data structure
+      }
+      "gsx$longitude": {
+      "$t": "value"
+      }
+      {
+      */
       var entry = gdriveentry[String(schema[property])];
-       object[property] = entry['$t'];
+       object[property] = entry['$t']; 
     }
     /*
   Determine object type and construct timemap object
@@ -69,7 +77,8 @@ var jqxhr = jQuery.get( string, function() {
           for (var category in categories) 
             returnData.push(categories[category]);
         };
-        funct(parent,returnData);
+        //call the onComplete function and pass the returned Data back 
+        onComplete(parent,returnData);
     }
   })
   .fail(function() {

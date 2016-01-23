@@ -9,6 +9,9 @@ function editor(parent,options) {
 		this.renderPoint = options.injectionpoint;
 	}
 //private 
+/*
+@param{Object}
+*/
 function drawOptionZone(type,location) {
 	var content = "";
 $(location).append(" <div class=\"col-md-4\">"+content+"</div>");
@@ -19,7 +22,6 @@ console.log('addGroup')
 }
 this.addMarker =  function() {
 console.log(this.parent.map)
-
 }
 this.addLayer =  function() {
 console.log('Layer')
