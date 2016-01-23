@@ -18,12 +18,15 @@ var server = http.createServer(app).listen(port, host, function() {
 });
 
 // Load the non admin map screen
-app.get('/', function(req, res) {
-  res.sendfile('./public/index.html')
-});
+/* app.get('/', function(req, res) {
+  res.sendfile('./public/views/index.html')
+}); */
 //load the admin view (requires authentication)
 app.get('/edit/', function(req, res) {
-  res.sendfile('./public/edit.html')
+  res.sendfile('./public/views/edit.html')
+});
+app.get('/', function(req, res) {
+  res.sendfile('./public/views/documentation/index.html')
 });
 /*
 Built in Google Drive CORS Proxy
