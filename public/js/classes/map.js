@@ -190,8 +190,8 @@ function Map(timemap_instance, data, renderlocation, initialmapstate, debug) {
             })
         });
         //add tooltips 
-        if(this.parent.showToolTips)
-            $('[data-toggle="tooltip"]').tooltip();
+        $('[data-toggle="tooltip"]').tooltip();
+        
         //add a click event listener
         this.m.on('singleclick', function(evt) {
             var coordinates = this.m.getEventCoordinate(evt.originalEvent);

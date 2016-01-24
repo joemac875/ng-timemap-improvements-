@@ -18,19 +18,25 @@ var server = http.createServer(app).listen(port, host, function() {
 });
 
 
-//load the admin view (requires authentication)
-app.get('/edit/', function(req, res) {
-  res.sendfile('./public/views/edit.html')
+//load the embeddable view 
+app.get('/em', function(req, res) {
+  res.sendfile('./public/views/iframe/index.html')
 });
+//home
 app.get('/', function(req, res) {
-  res.sendfile('./public/views/documentation/index.html')
+  res.sendfile('./public/views/main/index.html')
+});
+//edit mode
+app.get('/edit', function(req, res) {
+  res.sendfile('./public/views/edit/index.html')
 });
 /*
-Built in Google Drive CORS Proxy
+Built in CORS Proxy
 */
-app.get('/gproxy/:key', function(req, res) {
+app.get('/proxy/:file', function(req, res) {
       console.log(req.params.key);
 
 });
 //serve the static components
 app.use(express.static('public'));
+	
