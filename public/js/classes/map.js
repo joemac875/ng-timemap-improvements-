@@ -179,7 +179,7 @@ function Map(timemap_instance, data, renderlocation, initialmapstate, debug) {
             }).extend([
                 //add custom buttons
                 new timemap_instance.FilterButton({}, this),
-                new timemap_instance.EditButton()
+                new timemap_instance.EditButton({},this.parent)
             ]),
             layers: this.mapObjects,
             target: document.getElementById(String(this.renderlocation)),
@@ -190,7 +190,8 @@ function Map(timemap_instance, data, renderlocation, initialmapstate, debug) {
             })
         });
         //add tooltips 
-        $('[data-toggle="tooltip"]').tooltip();
+        if(this.parent.showToolTips)
+            $('[data-toggle="tooltip"]').tooltip();
         //add a click event listener
         this.m.on('singleclick', function(evt) {
             var coordinates = this.m.getEventCoordinate(evt.originalEvent);

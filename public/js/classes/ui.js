@@ -62,13 +62,16 @@ timemap_instance.EditButton = function(opt_options, parent) {
     var options = opt_options || {};
     var button = document.createElement('button');
     button.innerHTML = '<i data-toggle="tooltip" title="Edit" data-placement="right"  class="fa fa-pencil"></i>';
-
     var this_ = this;
     /*
     Load edit view
     */
     var openEditModal = function(e) {
-       window.location = "/edit/" + window.location.search + window.location.hash;
+       if(parent.hasOwnProperty('key'))
+            window.location =  "http://docs.google.com/spreadsheets/d/"+parent.key+"/edit?usp=sharing";
+        else
+            alert("Error: Could find corresponding Google Drive Spreadsheet");
+       //window.location = "/edit/" + window.location.search + window.location.hash;
     };
 
     button.addEventListener('click', openEditModal, false);
