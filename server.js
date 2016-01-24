@@ -17,10 +17,7 @@ var server = http.createServer(app).listen(port, host, function() {
               host, port, app.get('env'));
 });
 
-// Load the non admin map screen
-/* app.get('/', function(req, res) {
-  res.sendfile('./public/views/index.html')
-}); */
+
 //load the admin view (requires authentication)
 app.get('/edit/', function(req, res) {
   res.sendfile('./public/views/edit.html')

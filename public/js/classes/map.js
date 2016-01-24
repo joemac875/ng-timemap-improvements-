@@ -106,7 +106,7 @@ function Map(timemap_instance, data, renderlocation, initialmapstate, debug) {
 
             }
             var selectName = String(renderlocation) + '_filters';
-            $('select').multiSelect(handlers);
+            $('#'+selectName).multiSelect(handlers);
             /* Now add tag filter UI */
             var taglocation = document.getElementById("mapObjects");
             htmlToReturn = '';

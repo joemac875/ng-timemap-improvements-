@@ -69,7 +69,7 @@
             if (files && files.length > 0) {
               for (var i = 0; i < files.length; i++) {
                 var file = files[i];
-                 $( "#googleSheets" ).append( " <li><a href=\"/edit/?&key="+file.id+"\">"+file.name+"</a></li>" );
+                 $( "#googleSheets" ).append( " <option value=\"/?&key="+file.id+"\">"+file.name+"</option>" );
               }
             } else {
               alert('No files found.');
