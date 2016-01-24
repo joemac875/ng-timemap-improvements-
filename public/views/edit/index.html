@@ -19,18 +19,22 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
     <link href="/plugins/css/multi-select.css" media="screen" rel="stylesheet" type="text/css">
     <script src="/js/classes/gDriveSelector.js"></script>
-      <script src="https://apis.google.com/js/client.js?onload=checkAuth">
+      <script src="//apis.google.com/js/client.js?onload=checkAuth">
     </script>
 </head>
 
 <body>
 
       <div id="authorize-div" style="display: none">
-       <button type="button" class="btn btn-danger btn-block" id="authorize-button" onclick="handleAuthClick(event)">Authorize access to Google Drive API</button>
+
+        <div class="alert alert-warning">
+              <button type="button" class="btn btn-danger btn-block" id="authorize-button" onclick="handleAuthClick(event)">Authorize access to Google Drive API</button>
+Login with your Google credentials to <b>load</b> or <b>edit</b> Spreadsheets from your Google Drive account 
+</div>
+   
 
     </div>
 <div class="alert alert-dismissible alert-info">
-  <button type="button" class="close" data-dismiss="alert">&close;</button>
   <strong>Edit Mode</strong><!-- This <a href="#" class="alert-link">alert needs your attention</a>, but it's not super important. -->
  
 

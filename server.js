@@ -17,20 +17,26 @@ var server = http.createServer(app).listen(port, host, function() {
               host, port, app.get('env'));
 });
 
-// Load the non admin map screen
-app.get('/', function(req, res) {
-  res.sendfile('./public/index.html')
+
+//load the embeddable view 
+app.get('/em', function(req, res) {
+  res.sendfile('./public/views/iframe/index.html')
 });
-//load the admin view (requires authentication)
-app.get('/edit/', function(req, res) {
-  res.sendfile('./public/edit.html')
+//home
+app.get('/', function(req, res) {
+  res.sendfile('./public/views/main/index.html')
+});
+//edit mode
+app.get('/edit', function(req, res) {
+  res.sendfile('./public/views/edit/index.html')
 });
 /*
-Built in Google Drive CORS Proxy
+Built in CORS Proxy
 */
-app.get('/gproxy/:key', function(req, res) {
+app.get('/proxy/:file', function(req, res) {
       console.log(req.params.key);
 
 });
 //serve the static components
 app.use(express.static('public'));
+	

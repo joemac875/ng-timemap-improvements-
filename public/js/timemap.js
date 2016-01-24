@@ -45,6 +45,9 @@ function timemap(parent, parameters) {
 /* Add bootstrap modal for filters */
 $( "body" ).append( '    <div class="modal fade" id="filterModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">        <div class="modal-dialog" role="document">            <div class="modal-content">                <div class="modal-header">                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>                    <h4 class="modal-title" id="myModalLabel">Hide or show map layers</h4>                </div>                <div class="modal-body">                    <div id="filters"></div>                </div>                <div class="modal-footer">                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>                </div>            </div>        </div>    </div>' );
 
+if (parameters.hasOwnProperty('showToolTips'))
+    parent.showToolTips = true;
+
 /*
 initialize() -- initializes timemap components
 @param{object} parent -> parent object from constructor
