@@ -18,7 +18,7 @@ methods:
 */
 
 function RemoteLayer(url, type, title, startDate, endDate,tags, uniqueid) {
-    /* Check that remote file exists and is of propert format*/
+    /* Check that remote file exists and is of proper format*/
     if( !((typeof type ===  "string") && ( (type === 'GeoJSON') || (type === 'KML') ) ))
             alert('Error:'+title+"is an invalid type.")
     /*==========================================*/
@@ -33,7 +33,11 @@ function RemoteLayer(url, type, title, startDate, endDate,tags, uniqueid) {
     this.startDate = startDate || [];
     this.endDate = endDate || [];
     this.tags = tags || [];
-    this.url = url || "";
+    this.url = url;
+    this.url = this.url.split("//")[1];
+    var proxyURL = "http://"+window.location.hostname.split(":")[0] + ":9251/";
+    this.url = proxyURL + this.url;
+    console.log(this.url);
     this.type = type || "invalid";
     this.elements = [this]; // for future use.
     this.visible = true;
@@ -65,6 +69,7 @@ function RemoteLayer(url, type, title, startDate, endDate,tags, uniqueid) {
     if(this.type === 'KML') 
         return new ol.layer.Vector({
         source: new ol.source.Vector({
+         extractStyles: true,  //use built in styles
           url: this.url,
           format: new ol.format.KML()
         })
@@ -73,6 +78,7 @@ function RemoteLayer(url, type, title, startDate, endDate,tags, uniqueid) {
     if(this.type === 'GeoJSON')
         return  new ol.layer.Vector({
         source: new ol.source.Vector({
+          extractStyles: true,  //use built in styles
           url: this.url,
           format: new ol.format.GeoJSON()
         })

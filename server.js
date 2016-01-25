@@ -1,8 +1,9 @@
 // server.js
 
 // Generate a new instance of express server.
-var express = require('express')
-  , http = require('http');
+var express = require('express'), http = require('http');
+
+
 
 var app = express();
 
@@ -22,6 +23,7 @@ var server = http.createServer(app).listen(port, host, function() {
 app.get('/em', function(req, res) {
   res.sendfile('./public/views/iframe/index.html')
 });
+
 //home
 app.get('/', function(req, res) {
   res.sendfile('./public/views/main/index.html')
@@ -30,13 +32,17 @@ app.get('/', function(req, res) {
 app.get('/edit', function(req, res) {
   res.sendfile('./public/views/edit/index.html')
 });
-/*
-Built in CORS Proxy
-*/
-app.get('/proxy/:file', function(req, res) {
-      console.log(req.params.key);
 
+/* Built in CORS Proxy */ 
+var cors_proxy = require('cors-anywhere');
+cors_proxy.createServer({
+    originWhitelist: [], // Allow all origins 
+    requireHeader: ['origin', 'x-requested-with'],
+    removeHeaders: ['cookie', 'cookie2']
+}).listen(port+1, host, function() {
+    console.log('Running CORS Anywhere on ' + host + ':' + port+1);
 });
+
 //serve the static components
 app.use(express.static('public'));
 	
