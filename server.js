@@ -4,7 +4,6 @@
 var express = require('express'), http = require('http');
 
 
-
 var app = express();
 
 /* This will allow Cozy to run your app smoothly but
