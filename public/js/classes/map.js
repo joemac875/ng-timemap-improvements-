@@ -51,11 +51,9 @@ function Map(timemap_instance, data, renderlocation, initialmapstate, debug) {
         }
     }
     this.filterByTags = function(tag) {
-        console.log(tag,this.mapData);
             for (var i = this.mapData.length - 1; i >= 0; i--) {
                 if (this.mapData[i].hasOwnProperty('tags')) {
                         for (var l = 0; l < this.mapData[l].length; l++) {
-                            console.log(this.mapData[i].tags[l]);
                             if(this.mapData[i].tags[l] == tag)
                                 this.mapData[i].visible = false;
                         };
@@ -64,10 +62,14 @@ function Map(timemap_instance, data, renderlocation, initialmapstate, debug) {
                             if (this.mapData[i].elements[l].hasOwnProperty('tags')) {
 
                                 for (var k = 0; k < this.mapData[i].elements[l].tags.length; k++) {
-                                console.log(this.mapData[i].elements[l].tags[k] == tag);
-
-                                        if(this.mapData[i].elements[l].tags[k] == tag);
-                                            this.mapData[i].elements[l].tags[k].visible = false;
+                                    if(tag  === 'Show All') {
+                                        this.mapData[i].elements[l].visible = true;
+                                    } else {
+                                        if(this.mapData[i].elements[l].tags[k] != tag) 
+                                                this.mapData[i].elements[l].visible = false;
+                                            else 
+                                                this.mapData[i].elements[l].visible = true;
+                                        }
                                }
                        }
                         };

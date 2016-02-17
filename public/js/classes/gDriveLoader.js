@@ -13,7 +13,9 @@ function gDriveLoader(key,onComplete,parent) {
 "tags" : "gsx$title",
 "category" : "gsx$category",
 "endDate" : "gsx$enddate",
-"startDate" : "gsx$startdate"
+"startDate" : "gsx$startdate",
+"type" : "gsx$type"
+
   };
 
   function toMapObject(gdriveentry) {
@@ -41,7 +43,7 @@ function gDriveLoader(key,onComplete,parent) {
      return new MapObject(object["latitude"], object["longitude"], object["title"], object["startDate"].split('/'), object["endDate"].split('/'), 'icon', object["tags"].split(','), object["html"]);
     } else {
       if ((object.itemtype.trim() === "layer") || (object.itemtype.trim() === "↵layer")) {
-        return new RemoteLayer(object["html"], 'KML', object["title"], object["startDate"].split('/'),  object["endDate"].split('/'),object["tags"].split(','), guid());
+        return new RemoteLayer(object["html"], RemoteLayer(object["type"]), object["title"], object["startDate"].split('/'),  object["endDate"].split('/'),object["tags"].split(','), guid());
       }
       var output = '';
     for (var property in gdriveentry) {
