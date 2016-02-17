@@ -19,6 +19,30 @@ Initializes new timemap instances.
 */
 function timemap(parent, parameters) {
     /*
+    Begin Library Includes
+     */
+    
+    //create an array containing the paths for each class
+    var scripts = ["./plugins/js/jquery.multi-select.js","./js/classes/gDriveSelector.js","./js/classes/gDriveLoader.js","./js/lib/overloads.js","./js/classes/ui.js","./js/classes/marker.js","./js/classes/geojsonlayer.js","./js/classes/makerset.js","./js/classes/remotelayer.js","./js/classes/timeline.js","./js/classes/map.js"];
+    //pass each path into a for loop that will include the class of the given path
+    var i;
+    for (i = 0; i<scripts.length;i++){
+        var script   = document.createElement("script");
+        script.type  = "text/javascript";
+        script.src = scripts[i];
+        document.body.appendChild(script);
+    }
+    /*
+     End Library Includes
+     */
+    
+     /*
+    var script   = document.createElement("script");
+    script.type  = "text/javascript";
+    script.src   = "./js/classes/marker.js";    // use this for linked script
+    document.body.appendChild(script);
+       */
+    /*
     Get zoom, latitude, and longitude (and angle) from the hash
     */
     parent.mapInitalState = {};
